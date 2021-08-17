@@ -6,6 +6,10 @@ const routes: Routes = [
     path: '',
     loadChildren: () => import('./todoist/todoist.module').then((m) => m.TodoistModule)
   },
+  /*{
+    path: '**',
+    component: PageNotFoundComponent
+  },  // Wildcard route for a 404 page*/
 ];
 
 @NgModule({

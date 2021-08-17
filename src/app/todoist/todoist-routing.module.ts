@@ -4,8 +4,13 @@ import { TasksComponent } from './pages/tasks/tasks.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'tasks/:taskId',
     component: TasksComponent
+  },
+  {
+    path: '',
+    redirectTo: 'tasks/myday',
+    pathMatch: 'full'
   }
 ];
 

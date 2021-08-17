@@ -1,16 +1,18 @@
-<ul class="w-full cursor-pointer mt-7 ml-5 pr-2">
-  <li class="hover:bg-gray-100 rounded">
-    <div class="flex flex-row items-center w-full h-9 px-2 py-2 text-sm">
-      <span class="pr-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
-        </svg>
-      </span>
-      <label class="font-medium">My Day</label>
-    </div>
+<ul class="w-full mt-7 ml-5 pr-2">
+  <li class="hover:bg-gray-100 rounded cursor-pointer" *ngFor="let menu of menus">
+    <a routerLink="/tasks/{{menu.name}}" routerLinkActive="active">
+      <div class="flex flex-row items-center w-full h-9 px-2 py-2 text-sm">
+        <span class="pr-2">
+           <svg-icon
+             [name]="menu.icon"
+             [size]="16">
+            </svg-icon>
+        </span>
+        <label [ngClass]="{'font-medium': menu.active}" class="cursor-pointer">{{menu.label}}</label>
+      </div>
+    </a>
   </li>
-  <li class="hover:bg-gray-100 rounded">
+  <!--<li class="hover:bg-gray-100 rounded">
     <div class="flex flex-row items-center w-full h-9 px-2 py-2 text-sm">
       <span class="pr-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
@@ -45,5 +47,5 @@
       </span>
       <label class="">Task</label>
     </div>
-  </li>
+  </li>-->
 </ul>
