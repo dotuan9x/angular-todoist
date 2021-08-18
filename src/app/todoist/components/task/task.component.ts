@@ -1,5 +1,5 @@
 import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
-import {Router, ActivatedRoute, ParamMap} from '@angular/router';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-task',
@@ -10,17 +10,12 @@ export class TaskComponent implements OnInit {
 
   // @Output() onClickTask = new EventEmitter();
 
-  constructor(private route: ActivatedRoute,) {
+  constructor() {
 
   }
 
   ngOnInit(): void {
     console.log('ngOnInit', this.title)
-
-    this.route.queryParams.subscribe(params => {
-      //this.name = params['name'];
-      console.log('params[\'name\']', params['name'])
-    });
   }
 
   onClickTask() {

@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {TMenu} from '@app/interface/menu'
+import {IMenu} from '@app/interface/menu.type'
 
 @Component({
   selector: '[app-left-menu]',
   templateUrl: './left-menu.component.html'
 })
 export class LeftMenuComponent implements OnInit {
-  @Input() menus: TMenu[] = [
+  @Input() menus: IMenu[] = [
     {name: 'myday', label: 'My Day', active: true, icon: 'sun'},
     {name: 'important', label: 'Important', active: false, icon: 'star'},
     {name: 'planned', label: 'Planned', active: false, icon: 'calendar'},

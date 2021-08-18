@@ -2,9 +2,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { StoreModule } from '@ngrx/store';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
-import { BreadcrumbComponent } from './todoist/components/breadcrumb/breadcrumb.component';
 
 // Reducer
 import * as appReducer from './app.reducer';
@@ -16,6 +15,7 @@ import * as appReducer from './app.reducer';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    BrowserAnimationsModule,
     StoreModule.forRoot({ app: appReducer.reducer })
   ],
   providers: [],

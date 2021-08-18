@@ -1,4 +1,4 @@
-export interface TMenu {
+export interface IMenu {
   name: string,
   label: string,
   active: boolean,
