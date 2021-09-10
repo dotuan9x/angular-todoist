@@ -4,12 +4,41 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Danh sách các chức năng
 - [ ] Thêm task mới
-- [ ] Storybook cho document
+- [x] Storybook cho document
 - 
 
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+### GraphQL
+Sử dụng package [apollo-angular](https://apollo-angular.com/docs/data/queries) để áp dụng graphQL vào project
+
+Để cài đặt ta sử dụng câu lệnh sau, sẽ tự động thêm vào các thư viện cần thiết.
+```bash
+ng add apollo-angular
+```
+
+**Khai báo graphQL schema**
+```ts
+import {gql} from 'apollo-angular';
+
+export const QUERY_RATES = gql`
+  query query {
+    rates(currency: "USD") {
+      currency
+      rate
+    }
+  }
+`;
+```
+
+**Sử dụng graphQL trong component**
+```ts
+import {Apollo} from 'apollo-angular';
+import {QUERY_RATES} from '@app/graphql'
+
+```
 
 ## Code scaffolding
 

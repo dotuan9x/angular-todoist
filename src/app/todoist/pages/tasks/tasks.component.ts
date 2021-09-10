@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {Apollo} from 'apollo-angular';
 import {ITask} from "@app/interface/task.type";
+import {QUERY_RATES} from '@app/graphql'
 
 @Component({
   selector: 'app-tasks',
@@ -49,10 +51,22 @@ export class TasksComponent implements OnInit {
     }
   ]
 
-  constructor() { }
+  rates: any[];
+  loading = true;
+  error: any;
+
+  constructor(private apollo: Apollo) {}
 
   ngOnInit(): void {
-
+    this.apollo
+    .watchQuery({
+      query: QUERY_RATES
+    })
+    .valueChanges.subscribe((result: any) => {
+      this.rates = result?.data?.rates;
+      this.loading = result.loading;
+      this.error = result.error;
+    });
   }
 
   drop(event: CdkDragDrop<string[]>) {
