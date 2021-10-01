@@ -1,5 +1,6 @@
 <div class="flex w-full h-full">
-  <div class="flex none bg-gray-50 w-72" app-left-menu></div>
+  <div class="flex none bg-gray-50 w-72 relative" left-menu></div>
+
   <div class="flex flex-col flex-grow p-7">
     <div class="flex flex-row flex-none w-full justify-between">
       <div class="">
@@ -45,29 +46,33 @@
       </div>
     </div>
     <div class="flex flex-grow flex-col mt-5">
-      <add-task></add-task>
+      <add-task (onAddTask)="onAddTask($event)"></add-task>
+      <span>aaaaaa {{count$ | async}}</span>
 
-      <ul class="w-full" *ngIf="tasks.length">
-        <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-          <app-task *ngFor="let task of tasks" [title]="task.title" cdkDrag></app-task>
+      <div class="overflow-y-auto">
+        <ul class="w-full" *ngIf="tasks.length">
+          <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+            <app-task *ngFor="let task of tasks" [title]="task.title" cdkDrag></app-task>
+          </div>
+        </ul>
+        <div class="w-full flex flex-row cursor-text">
+          <div class="flex flex-none items-center justify-center w-8">
+            <svg-icon
+              name="chevron-down"
+              [size]="16">
+            </svg-icon>
+          </div>
+          <div class="flex flex-col flex-grow px-3 py-2">
+            <label class="text-sm cursor-text font-semibold">Đã hoàn thành</label>
+          </div>
         </div>
-      </ul>
-      <div class="w-full flex flex-row cursor-text">
-        <div class="flex flex-none items-center justify-center w-8">
-          <svg-icon
-            name="chevron-down"
-            [size]="16">
-          </svg-icon>
-        </div>
-        <div class="flex flex-col flex-grow px-3 py-2">
-          <label class="text-sm cursor-text">Đã hoàn thành</label>
-        </div>
+        <ul class="w-full">
+          <app-task *ngFor="let task of tasks" [title]="task.title"></app-task>
+        </ul>
       </div>
-      <ul class="w-full">
-        <app-task *ngFor="let task of tasks" [title]="task.title"></app-task>
-      </ul>
     </div>
   </div>
+
   <div class="flex none bg-gray-50 w-80 p-3">
     <div class="w-full border border-gray-100 rounded p-3 bg-white">
       <div class="flex flex-row border-b border-gray-100">

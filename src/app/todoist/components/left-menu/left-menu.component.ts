@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import {IMenu} from '@app/interface/menu.type'
 
 @Component({
-  selector: '[app-left-menu]',
+  selector: '[left-menu]',
   templateUrl: './left-menu.component.html'
 })
 export class LeftMenuComponent implements OnInit {

@@ -3,9 +3,12 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.3.
 
 ## Danh sách các chức năng
-- [ ] Thêm task mới
+- [ ] Chức năng thêm task mới
 - [x] Storybook cho document
-- 
+- [x] Tích hợp graphQL
+- [ ] Chức năng sắp xếp các task
+- [ ] SCAMs (single component Angular modules)
+
 
 ## Development server
 
