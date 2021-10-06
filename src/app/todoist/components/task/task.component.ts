@@ -1,30 +1,36 @@
 import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
 import { FormControl } from '@angular/forms';
+import {Store} from "@ngrx/store";
+import {TodoState} from "@todoist/todoist.reducer";
+import {updateTask} from "@todoist/todoist.actions";
 
 @Component({
   selector: 'app-task',
   templateUrl: './task.component.html'
 })
 export class TaskComponent implements OnInit {
+  @Input() id: string = "";
   @Input() title: string = "Title";
+  @Input() status: string
 
-  // @Output() onClickTask = new EventEmitter();
-
-  constructor() {
+  constructor(private store: Store<TodoState>) {
 
   }
 
   ngOnInit(): void {
-    console.log('ngOnInit', this.title)
+
   }
 
   onClickTask() {
     console.log('onClickTask')
-    // this.onClickTask.emit()
+
   }
 
   onClickTaskDone() {
-
+    this.store.dispatch(updateTask({
+      id: this.id,
+      status: 'DONE'
+    }))
   }
 
   onClickTaskStar() {

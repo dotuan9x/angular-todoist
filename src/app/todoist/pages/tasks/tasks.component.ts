@@ -1,16 +1,21 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {NavigationStart, Router} from "@angular/router";
+import {NavigationStart, Router, ActivatedRoute, ParamMap} from "@angular/router";
 import {Apollo} from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import {ITask} from "@app/interface/task.type";
+import {IMenu} from "@app/interface/menu.type";
+import {ISort, ITask, ISortBy} from "@app/interface/task.type";
 import {QUERY_RATES} from '@app/graphql'
+import {TaskService} from "@app/services/task.service";
+import {TASK_SORT} from "@todoist/config/const";
 
 import {createTask} from "@todoist/todoist.actions";
 import {TodoState} from '@app/todoist/todoist.reducer'
-import {getCounter} from '@app/todoist/todoist.selectors'
+import {getTitle} from '@app/todoist/todoist.selectors'
+
+import {of} from 'rxjs'
 
 @Component({
   selector: 'app-tasks',
@@ -18,8 +23,9 @@ import {getCounter} from '@app/todoist/todoist.selectors'
   styleUrls: ['tasks.component.scss']
 })
 export class TasksComponent implements OnInit {
-  title = 'My day'
+  title: Observable<string>;
   today: number = Date.now();
+  menus: IMenu[] = [];
   tasks: ITask[] = [
     {
       title: "Hello",
@@ -58,29 +64,32 @@ export class TasksComponent implements OnInit {
       created: new Date()
     }
   ]
+  sorts: ISort[] = TASK_SORT;
+  sortBy: ISortBy = {};
+  openDrawer: boolean = false;
   rates: any[];
   loading = true;
   error: any;
-  count$: Observable<number>
 
   constructor(
-    private apollo: Apollo,
+    private taskService: TaskService,
     private store: Store<TodoState>,
-    private router: Router) {
+    private router: Router,
+    private route: ActivatedRoute) {
     // Check route change
-    router.events.subscribe((val) => {
+    /*router.events.subscribe((val) => {
       if (val instanceof NavigationStart) {
-          console.log('NavigationStart', val )
+        const taskId = this.route.snapshot.paramMap.get('taskId');
+        console.log('taskId', taskId)
       }
-    })
+    })*/
 
-    this.count$ = store.select(getCounter)
-
-    console.log('this.count$', this.count$)
+    this.title = store.select(getTitle)
   }
 
   ngOnInit(): void {
-    this.apollo
+    this.taskService.getTasks();
+    /*this.apollo
     .watchQuery({
       query: QUERY_RATES
     })
@@ -88,13 +97,19 @@ export class TasksComponent implements OnInit {
       this.rates = result?.data?.rates;
       this.loading = result.loading;
       this.error = result.error;
-    });
-
-
+    });*/
   }
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.tasks, event.previousIndex, event.currentIndex);
+  }
+
+  onClickSort(sort: ISort) {
+
+  }
+
+  onClickSuggestions() {
+    this.openDrawer = !this.openDrawer;
   }
 
   onAddTask(taskName) {
