@@ -1,6 +1,6 @@
 # Angular
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.3.
+Project được tạo bởi [Angular CLI](https://github.com/angular/angular-cli) version 12.0.3.
 
 ## Danh sách các chức năng
 - [ ] Chức năng thêm task mới
@@ -14,8 +14,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-### GraphQL
-Sử dụng package [apollo-angular](https://apollo-angular.com/docs/data/queries) để áp dụng graphQL vào project
+### Cài đặt và sử dụng GraphQL
+Sử dụng package [apollo-angular](https://apollo-angular.com/docs/data/queries) để áp dụng GraphQL vào project
 
 Để cài đặt ta sử dụng câu lệnh sau, sẽ tự động thêm vào các thư viện cần thiết.
 ```bash
@@ -24,6 +24,8 @@ ng add apollo-angular
 
 **Khai báo graphQL schema**
 ```ts
+//src/app/graphql.ts
+
 import {gql} from 'apollo-angular';
 
 export const QUERY_RATES = gql`

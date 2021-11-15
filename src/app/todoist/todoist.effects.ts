@@ -1,23 +1,37 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { EMPTY } from 'rxjs';
-import { map, mergeMap, catchError } from 'rxjs/operators';
-// import { MoviesService } from './movies.service';
+import { map, mergeMap, catchError} from 'rxjs/operators';
+import {getProjectsAction, getTasksAction} from "@todoist/todoist.actions";
+import {ProjectService, TaskService} from "@app/services";
 
 @Injectable()
 export class TodoistEffects {
-
-  /*loadMovies$ = createEffect(() => this.actions$.pipe(
-      ofType('[Movies Page] Load Movies'),
-      mergeMap(() => this.moviesService.getAll()
+  loadProjects$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getProjectsAction),
+      mergeMap(() => this.projectService.getAll()
         .pipe(
-          map(movies => ({ type: '[Movies API] Movies Loaded Success', payload: movies })),
+          map(projects => ({ type: '[Todoist] Update Projects', projects: projects })),
           catchError(() => EMPTY)
         ))
     )
-  );*/
+  );
+
+  loadTasks$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getTasksAction),
+      mergeMap(() => this.taskService.getAll()
+        .pipe(
+          map(tasks => ({ type: '[Todoist] Update Tasks', tasks: tasks })),
+          catchError(() => EMPTY)
+        ))
+    )
+  );
 
   constructor(
-    private actions$: Actions
+    private actions$: Actions,
+    private projectService: ProjectService,
+    private taskService: TaskService
   ) {}
 }

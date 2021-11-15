@@ -1,21 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
-import {NavigationStart, Router, ActivatedRoute, ParamMap} from "@angular/router";
-import {Apollo} from 'apollo-angular';
+import {NavigationStart, Router, ActivatedRoute} from "@angular/router";
 import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
+import {select, Store} from '@ngrx/store';
 
 import {IMenu} from "@app/interface/menu.type";
 import {ISort, ITask, ISortBy} from "@app/interface/task.type";
-import {QUERY_RATES} from '@app/graphql'
 import {TaskService} from "@app/services/task.service";
 import {TASK_SORT} from "@todoist/config/const";
 
-import {createTask} from "@todoist/todoist.actions";
+import {getProjectsAction, changeSortBy, createTask} from "@todoist/todoist.actions";
 import {TodoState} from '@app/todoist/todoist.reducer'
-import {getTitle} from '@app/todoist/todoist.selectors'
-
-import {of} from 'rxjs'
+import {getProjects, getTitle, getTasks, getSortBy} from '@app/todoist/todoist.selectors'
 
 @Component({
   selector: 'app-tasks',
@@ -25,48 +21,11 @@ import {of} from 'rxjs'
 export class TasksComponent implements OnInit {
   title: Observable<string>;
   today: number = Date.now();
-  menus: IMenu[] = [];
-  tasks: ITask[] = [
-    {
-      title: "Hello",
-      status: 'TODO',
-      important: false,
-      created: new Date()
-    },
-    {
-      title: "Hello 1",
-      status: 'TODO',
-      important: false,
-      created: new Date()
-    },
-    {
-      title: "Hello 2",
-      status: 'TODO',
-      important: false,
-      created: new Date()
-    },
-    {
-      title: "Hello 3",
-      status: 'TODO',
-      important: false,
-      created: new Date()
-    },
-    {
-      title: "Hello 4",
-      status: 'TODO',
-      important: false,
-      created: new Date()
-    },
-    {
-      title: "Hello 5",
-      status: 'TODO',
-      important: false,
-      created: new Date()
-    }
-  ]
+  tasks: ITask[] = [];
   sorts: ISort[] = TASK_SORT;
-  sortBy: ISortBy = {};
+  sortBy: Observable<ISortBy>;
   openDrawer: boolean = false;
+  collapseTaskDone: boolean = true;
   rates: any[];
   loading = true;
   error: any;
@@ -85,10 +44,18 @@ export class TasksComponent implements OnInit {
     })*/
 
     this.title = store.select(getTitle)
+    this.sortBy = store.select(getSortBy)
+
+    store.select(getTasks).subscribe((tasks) => {
+      this.tasks = [].concat(tasks)
+    })
   }
 
   ngOnInit(): void {
-    this.taskService.getTasks();
+    // this.taskService.getTasks();
+
+    this.store.dispatch(getProjectsAction());
+
     /*this.apollo
     .watchQuery({
       query: QUERY_RATES
@@ -105,7 +72,7 @@ export class TasksComponent implements OnInit {
   }
 
   onClickSort(sort: ISort) {
-
+    this.store.dispatch(changeSortBy(sort))
   }
 
   onClickSuggestions() {
@@ -113,7 +80,6 @@ export class TasksComponent implements OnInit {
   }
 
   onAddTask(taskName) {
-    console.log('taskName', taskName)
     if (taskName) {
       this.store.dispatch(createTask({
         task: {
@@ -122,5 +88,9 @@ export class TasksComponent implements OnInit {
         }
       }));
     }
+  }
+
+  onClickCollapseTaskDone() {
+    this.collapseTaskDone = !this.collapseTaskDone;
   }
 }

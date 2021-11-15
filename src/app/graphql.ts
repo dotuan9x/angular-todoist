@@ -1,10 +1,18 @@
 import {gql} from 'apollo-angular';
 
-export const QUERY_RATES = gql`
+// Reference => https://apollo-angular.com/docs/data/queries
+export const QUERY_PROJECTS = gql`
   query query {
-    rates(currency: "USD") {
-      currency
-      rate
+    projects {
+      title
+    }
+  }
+`;
+
+export const QUERY_TASKS = gql`
+  query query {
+    tasks {
+      title
     }
   }
 `;
