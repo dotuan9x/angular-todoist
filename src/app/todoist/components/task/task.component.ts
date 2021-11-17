@@ -2,7 +2,7 @@ import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import {Store} from "@ngrx/store";
 import {TodoState} from "@todoist/todoist.reducer";
-import {updateTask} from "@todoist/todoist.actions";
+import {updateTaskAction} from "@todoist/todoist.actions";
 
 @Component({
   selector: 'app-task',
@@ -27,7 +27,7 @@ export class TaskComponent implements OnInit {
   }
 
   onClickTaskDone() {
-    this.store.dispatch(updateTask({
+    this.store.dispatch(updateTaskAction({
       id: this.id,
       status: 'DONE'
     }))

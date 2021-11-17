@@ -3,11 +3,12 @@
 Project được tạo bởi [Angular CLI](https://github.com/angular/angular-cli) version 12.0.3.
 
 ## Danh sách các chức năng
-- [ ] Chức năng thêm task mới
-- [x] Storybook cho document
-- [x] Tích hợp graphQL
-- [ ] Chức năng sắp xếp các task
-- [ ] SCAMs (single component Angular modules)
+- [x] [Storybook cho document](https://storybook.js.org/docs/angular/get-started/introduction)
+- [x] [Tích hợp graphQL](https://apollo-angular.com/docs/)
+- [ ] [SCAMs (single component Angular modules)](https://dev.to/this-is-angular/emulating-tree-shakable-components-using-single-component-angular-modules-13do)
+- [ ] [Lazy-loading feature modules](#Lazy-loading feature modules)
+- [ ] [Strict mode](https://angular.io/guide/strict-mode)
+- [ ] Smart and pure components pattern.
 
 
 ## Development server
@@ -45,6 +46,15 @@ import {QUERY_RATES} from '@app/graphql'
 
 ```
 
+### SCAMs (single component Angular modules)
+Reference:
+- https://dev.to/this-is-angular/emulating-tree-shakable-components-using-single-component-angular-modules-13do
+- https://angular-training-guide.rangle.io/modules/module-scam-pattern
+
+### Lazy-loading feature modules
+Reference:
+- https://angular.io/guide/lazy-loading-ngmodules
+
 ## Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
@@ -64,3 +74,6 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+# Reference
+- [Learn RxJS](https://www.learnrxjs.io/learn-rxjs/operators)

@@ -1,122 +1,105 @@
 <div class="flex w-full h-full">
-  <div class="flex none bg-gray-50 w-72 relative">
-    <left-menu></left-menu>
-  </div>
-  <mat-drawer-container hasBackdrop="false" class="flex flex-grow">
-    <mat-drawer-content>
-      <div class="flex w-full h-full">
-        <div class="flex flex-col flex-grow p-7 bg-white">
-          <div class="flex flex-row flex-none w-full justify-between">
-            <div class="">
-              <h1 class="">{{title | async}}</h1>
-              <span class="text-xs">{{today | date}}</span>
-            </div>
-            <div class="flex flex-row text-sm">
-              <div class="flex flex-row items-center cursor-pointer p-2 h-9 rounded hover:bg-gray-100" [matMenuTriggerFor]="menu">
-                <svg-icon
-                  name="switch-vertical"
-                  [size]="16">
-                </svg-icon>
-                <label class="pl-2 cursor-pointer">Sort</label>
-                <mat-menu #menu="matMenu">
-                  <button mat-menu-item *ngFor="let sort of sorts" (click)="onClickSort(sort)">
-                    <div class="flex flex-row items-center">
-                      <svg-icon
-                        *ngIf="sort.icon"
-                        [name]="sort.icon"
-                        [size]="16">
-                      </svg-icon>
-                      <span class="pl-2">{{sort.title}}</span>
-                    </div>
-                  </button>
-                </mat-menu>
-              </div>
+  <div class="flex flex-col flex-grow p-7 bg-white">
+    <todoist-skeleton *ngIf="showLoading"></todoist-skeleton>
 
-              <div (click)="onClickSuggestions()"
-                   class="flex flex-row items-center cursor-pointer p-2 h-9 rounded hover:bg-gray-100">
-                <svg-icon
-                  name="light-bulb"
-                  [size]="16">
-                </svg-icon>
-                <label class="pl-2 cursor-pointer">Suggestions</label>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex w-full justify-end" *ngIf="(sortBy | async)?.name">
-            <div class="flex flex-row">
-                <span class="flex items-center pr-1 cursor-pointer">
-                   <svg-icon
-                     name="chevron-down"
-                     [size]="16">
-                   </svg-icon>
-                </span>
-                <span class="text-xs font-medium">Đã sắp xếp theo thứ tự bảng chữ cái</span>
-                <span class="flex items-center pl-1 cursor-pointer">
-                   <svg-icon
-                     name="close"
-                     [size]="12">
-                   </svg-icon>
-                </span>
-            </div>
-          </div>
-
-          <div class="flex flex-grow flex-col mt-5">
-            <add-task (onAddTask)="onAddTask($event)"></add-task>
-
-            <div class="overflow-y-auto">
-              <ul class="w-full" *ngIf="tasks.length">
-                <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-                  <app-task
-                    *ngFor="let task of tasks"
-                    [title]="task.title"
-                    [status]="task.status"
-                    cdkDrag
-                  ></app-task>
-                </div>
-              </ul>
-
-              <div (click)="onClickCollapseTaskDone()" [ngClass]="{'border-b': collapseTaskDone}" class="w-full flex flex-row hover:bg-gray-50 cursor-text cursor-pointer cursor-pointer border-t border-gray-100">
-                <div class="flex flex-none items-center justify-center w-8">
-                    <svg-icon
-                      matTooltip="Thu gọn nhóm nhiệm vụ"
-                      [ngClass]="{'-rotate-90': collapseTaskDone}"
-                      class="transform cursor-pointer hover:bg-gray-100 rounded-sm p-1"
-                      name="chevron-down"
-                      [size]="16">
-                    </svg-icon>
-                </div>
-                <div class="flex flex-row flex-grow px-3 py-4 cursor-pointer">
-                  <label class="text-sm cursor-pointer font-semibold">Đã hoàn thành</label>
-                  <span class="flex pl-2 text-sm">12</span>
-                </div>
-              </div>
-
-              <ul class="w-full" *ngIf="!collapseTaskDone">
-                <app-task *ngFor="let task of tasks" [title]="task.title"></app-task>
-              </ul>
-            </div>
-          </div>
+    <div *ngIf="!showLoading">
+      <div class="flex flex-row flex-none w-full justify-between">
+        <div class="">
+          <h1 class="">{{title}}</h1>
+          <span class="text-xs">{{today | date}}</span>
         </div>
+        <div class="flex flex-row text-sm">
+          <div class="flex flex-row items-center cursor-pointer p-2 h-9 rounded hover:bg-gray-100" [matMenuTriggerFor]="menu">
+            <svg-icon
+              name="switch-vertical"
+              [size]="16">
+            </svg-icon>
+            <label class="pl-2 cursor-pointer">Sort</label>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item *ngFor="let sort of sorts" (click)="onClickSort(sort)">
+                <div class="flex flex-row items-center">
+                  <svg-icon
+                    *ngIf="sort.icon"
+                    [name]="sort.icon"
+                    [size]="16">
+                  </svg-icon>
+                  <span class="pl-2">{{sort.title}}</span>
+                </div>
+              </button>
+            </mat-menu>
+          </div>
 
-        <div class="flex none bg-gray-50 w-80 p-3">
-          <div class="w-full border border-gray-100 rounded p-3 bg-white">
-            <task-detail></task-detail>
+          <div (click)="onClickSuggestions()"
+               class="flex flex-row items-center cursor-pointer p-2 h-9 rounded hover:bg-gray-100">
+            <svg-icon
+              name="light-bulb"
+              [size]="16">
+            </svg-icon>
+            <label class="pl-2 cursor-pointer">Suggestions</label>
           </div>
         </div>
       </div>
-    </mat-drawer-content>
-    <mat-drawer mode="over" position="end" class="w-80" [opened]="openDrawer">
-      <div class="relative p-5">
-        <span (click)="onClickSuggestions()" class="absolute top-5 right-5 cursor-pointer hover:opacity-80">
-          <svg-icon
-            name="close"
-            [size]="16">
-          </svg-icon>
+
+      <div class="flex w-full justify-end" *ngIf="(sortBy | async)?.name">
+        <div class="flex flex-row">
+        <span class="flex items-center pr-1 cursor-pointer">
+           <svg-icon
+             name="chevron-down"
+             [size]="16">
+           </svg-icon>
         </span>
-        <suggestion></suggestion>
+          <span class="text-xs font-medium">Đã sắp xếp theo thứ tự bảng chữ cái</span>
+          <span class="flex items-center pl-1 cursor-pointer">
+           <svg-icon
+             name="close"
+             [size]="12">
+           </svg-icon>
+        </span>
+        </div>
       </div>
-    </mat-drawer>
-  </mat-drawer-container>
+
+      <div class="flex flex-grow flex-col mt-5">
+        <add-task (onAddTask)="onAddTask($event)"></add-task>
+
+        <div class="overflow-y-auto">
+          <ul class="w-full" *ngIf="tasks.length">
+            <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+              <app-task
+                *ngFor="let task of tasks"
+                [title]="task.title"
+                [status]="task.status"
+                cdkDrag
+              ></app-task>
+            </div>
+          </ul>
+
+          <div (click)="onClickCollapseTaskDone()" [ngClass]="{'border-b': collapseTaskDone}" class="w-full flex flex-row hover:bg-gray-50 cursor-text cursor-pointer cursor-pointer border-t border-gray-100">
+            <div class="flex flex-none items-center justify-center w-8">
+              <svg-icon
+                matTooltip="Thu gọn nhóm nhiệm vụ"
+                [ngClass]="{'-rotate-90': collapseTaskDone}"
+                class="transform cursor-pointer hover:bg-gray-100 rounded-sm p-1"
+                name="chevron-down"
+                [size]="16">
+              </svg-icon>
+            </div>
+            <div class="flex flex-row flex-grow px-3 py-4 cursor-pointer">
+              <label class="text-sm cursor-pointer font-semibold">Đã hoàn thành</label>
+              <span class="flex pl-2 text-sm">12</span>
+            </div>
+          </div>
+
+          <ul class="w-full" *ngIf="!collapseTaskDone">
+            <app-task *ngFor="let task of tasks" [title]="task.title"></app-task>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex none bg-gray-50 w-80 p-3">
+    <div class="w-full border border-gray-100 rounded p-3 bg-white">
+      <task-detail></task-detail>
+    </div>
+  </div>
 </div>
-<svg-definitions></svg-definitions>

@@ -4,13 +4,12 @@ import {ISortBy, ITask, IProject} from "@app/interface";
 import {IMenu} from "@app/interface/menu.type";
 
 import {DEFAULT_MENU} from '@todoist/config/const'
-import {updateProjectsAction, createTask, changeMenu, changeSortBy} from './todoist.actions';
+import {updateProjectsAction, updateTasksAction, createTaskAction, changeMenuAction, changeSortBy} from './todoist.actions';
 
 export const TODO_FEATURE_KEY = 'todo';
 
 export interface TodoState {
   menus: IMenu[];
-  title: string;
   projects: IProject[];
   tasks: ITask[];
   sortBy?: ISortBy;
@@ -18,7 +17,6 @@ export interface TodoState {
 
 export const initialState: TodoState = {
   menus: DEFAULT_MENU,
-  title: 'My day',
   projects: [],
   tasks: []
 };
@@ -27,10 +25,20 @@ export const totoReducer = createReducer(
   initialState,
     on(updateProjectsAction, (state, {projects}) => {
       return produce(state, draftState => {
+        // Update menu
+        draftState.menus = projects.map((project) => {
+          return {
+            name: project.name || project.id,
+            label: project.title,
+            active: false,
+            icon: project.icon,
+          }
+        })
+
         draftState.projects = projects
       })
     }),
-    on(changeMenu, (state, {id}) => {
+    on(changeMenuAction, (state, {id}) => {
       return produce(state, draftState => {
         draftState.menus.map((menu) => {
           menu.active = (menu.name === id)
@@ -39,10 +47,15 @@ export const totoReducer = createReducer(
         })
       })
     }),
+    on(updateTasksAction, (state, {tasks}) => {
+      return produce(state, draftState => {
+        draftState.tasks = tasks
+      })
+    }),
     on(changeSortBy, (state, sort) => {
       return {...state, sortBy: {name: sort.name, az: 'asc'}}
     }),
-    on(createTask, (state, {task}) => {
+    on(createTaskAction, (state, {task}) => {
 
       console.log('tasl', task)
 

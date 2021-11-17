@@ -11,10 +11,6 @@ export const getMenus = createSelector(todoSelector, state => {
   return state.menus
 });
 
-export const getTitle = createSelector(todoSelector, state => {
-  return state.title
-});
-
 export const getTasks = createSelector(todoSelector, state => {
   return state.tasks
 });

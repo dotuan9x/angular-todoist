@@ -20,7 +20,7 @@
               </svg>
           </span>
           </div>
-          <input type="text" style="width: 400px" name="price" id="price" autocomplete="off"
+          <input (change)="onChangeSearch($event)"  type="text" style="width: 400px" name="price" id="price" autocomplete="off"
                  class="block w-full h-full px-10 py-2 sm:text-sm border-0 rounded-sm"
                  placeholder="Search"/>
         </div>

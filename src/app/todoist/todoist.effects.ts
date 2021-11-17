@@ -1,9 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { EMPTY } from 'rxjs';
-import { map, mergeMap, catchError} from 'rxjs/operators';
-import {getProjectsAction, getTasksAction} from "@todoist/todoist.actions";
+import { map, mergeMap, find, withLatestFrom, catchError} from 'rxjs/operators';
+import {Store, select} from "@ngrx/store";
+import {
+  getProjectsAction,
+  updateProjectsAction,
+  getTasksAction,
+  updateTasksAction,
+  createTaskAction
+} from "@todoist/todoist.actions";
 import {ProjectService, TaskService} from "@app/services";
+import {getProjects} from "@todoist/todoist.selectors";
 
 @Injectable()
 export class TodoistEffects {
@@ -12,7 +20,7 @@ export class TodoistEffects {
       ofType(getProjectsAction),
       mergeMap(() => this.projectService.getAll()
         .pipe(
-          map(projects => ({ type: '[Todoist] Update Projects', projects: projects })),
+          map(projects => updateProjectsAction({projects: projects})),
           catchError(() => EMPTY)
         ))
     )
@@ -21,16 +29,27 @@ export class TodoistEffects {
   loadTasks$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getTasksAction),
-      mergeMap(() => this.taskService.getAll()
+      mergeMap(({ projectId }) => this.taskService.getAll(projectId)
         .pipe(
-          map(tasks => ({ type: '[Todoist] Update Tasks', tasks: tasks })),
+          map(tasks => updateTasksAction({tasks: tasks})),
           catchError(() => EMPTY)
         ))
     )
   );
 
+  /*createTask$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(createTaskAction),
+      mergeMap(({ task }) => this.taskService.createTask(task).pipe(
+        map(task => updateTasksAction({tasks: tasks})),
+        catchError(() => EMPTY)
+      ))
+    )
+  );*/
+
   constructor(
     private actions$: Actions,
+    private store: Store,
     private projectService: ProjectService,
     private taskService: TaskService
   ) {}

@@ -5,7 +5,7 @@ import {DragDropModule} from "@angular/cdk/drag-drop";
 import {StoreModule} from "@ngrx/store";
 import { EffectsModule } from '@ngrx/effects';
 
-import { TaskRoutingModule } from './todoist-routing.module';
+import { TodoistRoutingModule } from './todoist-routing.module';
 import {MatMenuModule} from "@angular/material/menu";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatCheckboxModule} from "@angular/material/checkbox";
@@ -13,8 +13,9 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatButtonModule} from "@angular/material/button";
 
+import { TodoistComponent } from "@todoist/todoist.component";
 import { TasksComponent } from './pages/tasks/tasks.component';
-import {SearchComponent} from "@todoist/pages/search/search.component";
+import { SearchComponent } from "@todoist/pages/search/search.component";
 import { TaskComponent } from './components/task/task.component'
 import { AddTaskComponent } from './components/add-task/add-task.component';
 import { LeftMenuComponent } from './components/left-menu/left-menu.component';
@@ -24,12 +25,14 @@ import { SvgIconComponent } from './components/svg-icon/svg-icon.component'
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { SuggestionComponent } from './components/suggestion/suggestion.component';
 import { TaskDetailComponent } from './components/task-detail/task-detail.component';
+import { SkeletonComponent } from "./components/skeleton/skeleton.component";
 
 import {TODO_FEATURE_KEY, totoReducer} from "./todoist.reducer";
 import {TodoistEffects} from "@todoist/todoist.effects";
 
 @NgModule({
   declarations: [
+    TodoistComponent,
     TasksComponent,
     SearchComponent,
     TaskComponent,
@@ -40,7 +43,8 @@ import {TodoistEffects} from "@todoist/todoist.effects";
     AddTaskComponent,
     NotFoundComponent,
     SuggestionComponent,
-    TaskDetailComponent
+    TaskDetailComponent,
+    SkeletonComponent,
   ],
   imports: [
     CommonModule,
@@ -48,11 +52,11 @@ import {TodoistEffects} from "@todoist/todoist.effects";
     DragDropModule,
     MatMenuModule,
     MatCheckboxModule,
-    TaskRoutingModule,
     MatRadioModule,
     MatTooltipModule,
     MatSidenavModule,
     MatButtonModule,
+    TodoistRoutingModule,
     StoreModule.forFeature(TODO_FEATURE_KEY, totoReducer),
     EffectsModule.forRoot([TodoistEffects])
   ]

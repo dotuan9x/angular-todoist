@@ -6,6 +6,11 @@ export interface ITask {
   created?: Date
 }
 
+export interface ICreateTaskInput {
+  title: string,
+  description?: string,
+}
+
 export interface ISort {
   name: string,
   title: string,

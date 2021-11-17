@@ -1,0 +1,22 @@
+<div class="flex w-full h-full">
+  <div class="flex none bg-gray-50 w-72 relative">
+    <left-menu></left-menu>
+  </div>
+  <mat-drawer-container hasBackdrop="false" class="flex flex-grow">
+    <mat-drawer-content>
+      <router-outlet></router-outlet>
+    </mat-drawer-content>
+    <mat-drawer mode="over" position="end" class="w-80" [opened]="openDrawer">
+      <div class="relative p-5">
+        <span (click)="onClickSuggestions()" class="absolute top-5 right-5 cursor-pointer hover:opacity-80">
+          <svg-icon
+            name="close"
+            [size]="16">
+          </svg-icon>
+        </span>
+        <suggestion></suggestion>
+      </div>
+    </mat-drawer>
+  </mat-drawer-container>
+</div>
+<svg-definitions></svg-definitions>

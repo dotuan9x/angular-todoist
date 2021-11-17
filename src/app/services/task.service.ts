@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {Apollo} from 'apollo-angular';
-import {QUERY_TASKS} from '@app/graphql'
+import {QUERY_TASKS, CREATE_TASK} from '@app/graphql'
 import {map} from "rxjs/operators";
+import {ICreateTaskInput} from "@app/interface";
 
 @Injectable({providedIn: 'root'})
 export class TaskService {
@@ -12,13 +13,21 @@ export class TaskService {
   constructor(private apollo: Apollo) {
   }
 
-  createTask() {
-
+  createTask(input: ICreateTaskInput) {
+    return this.apollo.mutate({
+      mutation: CREATE_TASK,
+      variables: {
+        ...input
+      },
+    }).pipe(map(result => result.data))
   }
 
-  getAll() {
+  getAll(projectId: string) {
     return this.apollo.watchQuery<any>({
-      query: QUERY_TASKS
+      query: QUERY_TASKS,
+      variables: {
+        projectId: projectId,
+      },
     }).valueChanges.pipe(
       map(result => result.data.tasks)
     );

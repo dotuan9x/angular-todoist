@@ -3,13 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'tasks',
     loadChildren: () => import('./todoist/todoist.module').then((m) => m.TodoistModule)
   },
-  /*{
-    path: '**',
-    component: PageNotFoundComponent
-  },  // Wildcard route for a 404 page*/
+  {
+    path: '',
+    redirectTo: 'tasks/myday',
+    pathMatch: 'full'
+  }
 ];
 
 @NgModule({
