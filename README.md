@@ -39,7 +39,7 @@ export const QUERY_RATES = gql`
 `;
 ```
 
-**Sử dụng graphQL trong component**
+**Sử dụng GraphQL trong component**
 ```ts
 import {Apollo} from 'apollo-angular';
 import {QUERY_RATES} from '@app/graphql'

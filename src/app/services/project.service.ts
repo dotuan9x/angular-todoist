@@ -15,7 +15,7 @@ export class ProjectService {
       query: QUERY_PROJECTS
     }).valueChanges
       .pipe(
-        map(result => result.data.projects)
+        map(result => result.data.projects.data)
       );
   }
 }

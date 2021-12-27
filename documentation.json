@@ -3,12 +3,12 @@
     "interfaces": [
         {
             "name": "Action",
-            "id": "interface-Action-b0e424b2432a940935bda024ff375f56",
-            "file": "src/app/app.actions.ts",
+            "id": "interface-Action-3a3f9f28036bfc63dac7905d3e637387",
+            "file": "src/app/todoist/todoist.actions.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { createAction } from '@ngrx/store';\r\n\r\nexport interface Action {\r\n  type: string\r\n}\r\n\r\nexport const increment = createAction('[Counter Component] Increment');\r\nexport const decrement = createAction('[Counter Component] Decrement');\r\nexport const reset = createAction('[Counter Component] Reset');\r\n",
+            "sourceCode": "import { createAction, props } from '@ngrx/store';\nimport {ITask, ISort, IProject} from \"@app/interface\";\n\nexport interface Action {\n  type: string\n}\n\n// Project\nexport const getProjectsAction = createAction('[Todoist] Get Projects')\nexport const updateProjectsAction = createAction('[Todoist] Update Projects', props<{projects: IProject[]}>());\n\n// Menu\nexport const changeMenuAction = createAction('[Todoist] Change Menu', props<{id: string}>());\n\n// Tasks\nexport const getTasksAction = createAction('[Todoist] Get Tasks', props<{projectId: string}>());\nexport const updateTasksAction = createAction('[Todoist] Update Tasks', props<{tasks: ITask[]}>());\nexport const createTaskAction = createAction('[Todoist] Create Task', props<{task: ITask}>());\nexport const updateTaskAction = createAction('[Todoist] Update Task', props<ITask>());\n\nexport const changeSortBy = createAction('[Todoist] Change Sort By', props<ISort>());\n",
             "properties": [
                 {
                     "name": "type",
@@ -17,21 +17,53 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 4
+                    "line": 5
                 }
             ],
             "indexSignatures": [],
-            "kind": 163,
+            "kind": 164,
+            "methods": []
+        },
+        {
+            "name": "ICreateTaskInput",
+            "id": "interface-ICreateTaskInput-a05d4a93a82fefa2ac0b94eefb5e7091",
+            "file": "src/app/interface/task.type.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface ITask {\n  id?: string,\n  title?: string,\n  status?: 'TODO' | 'DONE'\n  important?: boolean,\n  created?: Date\n}\n\nexport interface ICreateTaskInput {\n  title: string,\n  description?: string,\n}\n\nexport interface ISort {\n  name: string,\n  title: string,\n  icon?: string\n}\n\nexport interface ISortBy {\n  name?: string,\n  az?: 'asc' | 'desc'\n}\n",
+            "properties": [
+                {
+                    "name": "description",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 11
+                },
+                {
+                    "name": "title",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 10
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 164,
             "methods": []
         },
         {
             "name": "IMenu",
-            "id": "interface-IMenu-c81372ffb3fce5fb2b1514dde574dd2a",
+            "id": "interface-IMenu-9018bb2f753bcc88786adfc0419456f8",
             "file": "src/app/interface/menu.type.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "export interface IMenu {\r\n  name: string,\r\n  label: string,\r\n  active: boolean,\r\n  icon: string\r\n}\r\n",
+            "sourceCode": "export interface IMenu {\n  name: string,\n  label: string,\n  active: boolean,\n  icon: string,\n  counter?: number\n}\n",
             "properties": [
                 {
                     "name": "active",
@@ -41,6 +73,15 @@
                     "optional": false,
                     "description": "",
                     "line": 4
+                },
+                {
+                    "name": "counter",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "number",
+                    "optional": true,
+                    "description": "",
+                    "line": 6
                 },
                 {
                     "name": "icon",
@@ -71,42 +112,51 @@
                 }
             ],
             "indexSignatures": [],
-            "kind": 163,
+            "kind": 164,
             "methods": []
         },
         {
-            "name": "ITask",
-            "id": "interface-ITask-4ff9d44a49e5579134857e47d673ce95",
-            "file": "src/app/interface/task.type.ts",
+            "name": "IProject",
+            "id": "interface-IProject-cd530e6d00588d4849241e283ce94f48",
+            "file": "src/app/interface/project.type.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "export interface ITask {\r\n  title: string,\r\n  status: 'TODO' | 'DONE'\r\n  important: boolean,\r\n  created: Date\r\n}\r\n",
+            "sourceCode": "export interface IProject {\n  id?: string,\n  name?: string,\n  title: string,\n  description?: string,\n  icon?: string,\n}\n",
             "properties": [
                 {
-                    "name": "created",
+                    "name": "description",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "Date",
-                    "optional": false,
+                    "type": "string",
+                    "optional": true,
                     "description": "",
                     "line": 5
                 },
                 {
-                    "name": "important",
+                    "name": "icon",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "boolean",
-                    "optional": false,
+                    "type": "string",
+                    "optional": true,
                     "description": "",
-                    "line": 4
+                    "line": 6
                 },
                 {
-                    "name": "status",
+                    "name": "id",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "\"TODO\" | \"DONE\"",
-                    "optional": false,
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 2
+                },
+                {
+                    "name": "name",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": true,
                     "description": "",
                     "line": 3
                 },
@@ -117,38 +167,488 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 2
+                    "line": 4
                 }
             ],
             "indexSignatures": [],
-            "kind": 163,
+            "kind": 164,
             "methods": []
         },
         {
-            "name": "State",
-            "id": "interface-State-00a68138e9b3b0b8995e7e18c2225837",
-            "file": "src/app/app.reducer.ts",
+            "name": "ISort",
+            "id": "interface-ISort-a05d4a93a82fefa2ac0b94eefb5e7091",
+            "file": "src/app/interface/task.type.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { Action, createReducer, on } from '@ngrx/store';\r\nimport { increment, decrement, reset } from './app.actions';\r\n\r\nexport interface State {\r\n  counter: number;\r\n}\r\n\r\nexport const initialState: State = {\r\n  counter: 0\r\n};\r\n\r\nconst _counterReducer = createReducer(\r\n  initialState,\r\n  on(increment, (state) => ({...state, counter: state.counter + 1})),\r\n  on(decrement, (state) => ({...state, counter: state.counter - 1})),\r\n  on(reset, (state) => ({...state, counter: 0})),\r\n);\r\n\r\nexport function reducer(state: State | undefined, action: Action) {\r\n  return _counterReducer(state, action);\r\n}\r\n",
+            "sourceCode": "export interface ITask {\n  id?: string,\n  title?: string,\n  status?: 'TODO' | 'DONE'\n  important?: boolean,\n  created?: Date\n}\n\nexport interface ICreateTaskInput {\n  title: string,\n  description?: string,\n}\n\nexport interface ISort {\n  name: string,\n  title: string,\n  icon?: string\n}\n\nexport interface ISortBy {\n  name?: string,\n  az?: 'asc' | 'desc'\n}\n",
             "properties": [
                 {
-                    "name": "counter",
+                    "name": "icon",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "number",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 17
+                },
+                {
+                    "name": "name",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 5
+                    "line": 15
+                },
+                {
+                    "name": "title",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 16
                 }
             ],
             "indexSignatures": [],
-            "kind": 163,
+            "kind": 164,
+            "methods": []
+        },
+        {
+            "name": "ISortBy",
+            "id": "interface-ISortBy-a05d4a93a82fefa2ac0b94eefb5e7091",
+            "file": "src/app/interface/task.type.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface ITask {\n  id?: string,\n  title?: string,\n  status?: 'TODO' | 'DONE'\n  important?: boolean,\n  created?: Date\n}\n\nexport interface ICreateTaskInput {\n  title: string,\n  description?: string,\n}\n\nexport interface ISort {\n  name: string,\n  title: string,\n  icon?: string\n}\n\nexport interface ISortBy {\n  name?: string,\n  az?: 'asc' | 'desc'\n}\n",
+            "properties": [
+                {
+                    "name": "az",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "\"asc\" | \"desc\"",
+                    "optional": true,
+                    "description": "",
+                    "line": 22
+                },
+                {
+                    "name": "name",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 21
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 164,
+            "methods": []
+        },
+        {
+            "name": "ITask",
+            "id": "interface-ITask-a05d4a93a82fefa2ac0b94eefb5e7091",
+            "file": "src/app/interface/task.type.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "export interface ITask {\n  id?: string,\n  title?: string,\n  status?: 'TODO' | 'DONE'\n  important?: boolean,\n  created?: Date\n}\n\nexport interface ICreateTaskInput {\n  title: string,\n  description?: string,\n}\n\nexport interface ISort {\n  name: string,\n  title: string,\n  icon?: string\n}\n\nexport interface ISortBy {\n  name?: string,\n  az?: 'asc' | 'desc'\n}\n",
+            "properties": [
+                {
+                    "name": "created",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Date",
+                    "optional": true,
+                    "description": "",
+                    "line": 6
+                },
+                {
+                    "name": "id",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 2
+                },
+                {
+                    "name": "important",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "optional": true,
+                    "description": "",
+                    "line": 5
+                },
+                {
+                    "name": "status",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "\"TODO\" | \"DONE\"",
+                    "optional": true,
+                    "description": "",
+                    "line": 4
+                },
+                {
+                    "name": "title",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "optional": true,
+                    "description": "",
+                    "line": 3
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 164,
+            "methods": []
+        },
+        {
+            "name": "TodoState",
+            "id": "interface-TodoState-e6b9512571e772be580f6306d1ea23e1",
+            "file": "src/app/todoist/todoist.reducer.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "interface",
+            "sourceCode": "import {createReducer, on } from '@ngrx/store';\nimport produce from 'immer'\nimport {ISortBy, ITask, IProject} from \"@app/interface\";\nimport {IMenu} from \"@app/interface/menu.type\";\n\nimport {DEFAULT_MENU} from '@todoist/config/const'\nimport {updateProjectsAction, updateTasksAction, createTaskAction, changeMenuAction, changeSortBy} from './todoist.actions';\n\nexport const TODO_FEATURE_KEY = 'todo';\n\nexport interface TodoState {\n  menus: IMenu[];\n  projects: IProject[];\n  tasks: ITask[];\n  sortBy?: ISortBy;\n}\n\nexport const initialState: TodoState = {\n  menus: DEFAULT_MENU,\n  projects: [],\n  tasks: []\n};\n\nexport const totoReducer = createReducer(\n  initialState,\n    on(updateProjectsAction, (state, {projects}) => {\n      return produce(state, draftState => {\n        // Update menu\n        draftState.menus = projects.map((project) => {\n          return {\n            name: project.name || project.id,\n            label: project.title,\n            active: false,\n            icon: project.icon,\n          }\n        })\n\n        draftState.projects = projects\n      })\n    }),\n    on(changeMenuAction, (state, {id}) => {\n      return produce(state, draftState => {\n        draftState.menus.map((menu) => {\n          menu.active = (menu.name === id)\n\n          return menu;\n        })\n      })\n    }),\n    on(updateTasksAction, (state, {tasks}) => {\n      return produce(state, draftState => {\n        draftState.tasks = tasks\n      })\n    }),\n    on(changeSortBy, (state, sort) => {\n      return {...state, sortBy: {name: sort.name, az: 'asc'}}\n    }),\n    on(createTaskAction, (state, {task}) => {\n\n      console.log('tasl', task)\n\n      return {...state, tasks: state.tasks}\n    }),\n)\n",
+            "properties": [
+                {
+                    "name": "menus",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "IMenu[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 12
+                },
+                {
+                    "name": "projects",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "IProject[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 13
+                },
+                {
+                    "name": "sortBy",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ISortBy",
+                    "optional": true,
+                    "description": "",
+                    "line": 15
+                },
+                {
+                    "name": "tasks",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ITask[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 14
+                }
+            ],
+            "indexSignatures": [],
+            "kind": 164,
             "methods": []
         }
     ],
-    "injectables": [],
+    "injectables": [
+        {
+            "name": "ProjectService",
+            "id": "injectable-ProjectService-399e86b165a9f80b56f9427ab118b7a4",
+            "file": "src/app/services/project.service.ts",
+            "properties": [
+                {
+                    "name": "projects",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 8
+                }
+            ],
+            "methods": [
+                {
+                    "name": "getAll",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "any",
+                    "typeParameters": [],
+                    "line": 13,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import {Injectable} from '@angular/core';\nimport {Apollo} from 'apollo-angular';\nimport {map} from 'rxjs/operators';\nimport {QUERY_PROJECTS} from '@app/graphql'\n\n@Injectable({providedIn: 'root'})\nexport class ProjectService {\n  projects: any[];\n\n  constructor(private apollo: Apollo) {\n  }\n\n  getAll() {\n    return this.apollo.watchQuery<any>({\n      query: QUERY_PROJECTS\n    }).valueChanges\n      .pipe(\n        map(result => result.data.projects)\n      );\n  }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "apollo",
+                        "type": "Apollo",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 8,
+                "jsdoctags": [
+                    {
+                        "name": "apollo",
+                        "type": "Apollo",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "type": "injectable"
+        },
+        {
+            "name": "TaskService",
+            "id": "injectable-TaskService-88e9e9f5272af6ef42c96b71ff68ca75",
+            "file": "src/app/services/task.service.ts",
+            "properties": [
+                {
+                    "name": "error",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any",
+                    "optional": false,
+                    "description": "",
+                    "line": 11
+                },
+                {
+                    "name": "loading",
+                    "defaultValue": "true",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 10
+                },
+                {
+                    "name": "tasks",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "any[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 9
+                }
+            ],
+            "methods": [
+                {
+                    "name": "createTask",
+                    "args": [
+                        {
+                            "name": "input",
+                            "type": "ICreateTaskInput",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "any",
+                    "typeParameters": [],
+                    "line": 16,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "input",
+                            "type": "ICreateTaskInput",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "getAll",
+                    "args": [
+                        {
+                            "name": "projectId",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "any",
+                    "typeParameters": [],
+                    "line": 25,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "projectId",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import {Injectable} from '@angular/core';\nimport {Apollo} from 'apollo-angular';\nimport {QUERY_TASKS, CREATE_TASK} from '@app/graphql'\nimport {map} from \"rxjs/operators\";\nimport {ICreateTaskInput} from \"@app/interface\";\n\n@Injectable({providedIn: 'root'})\nexport class TaskService {\n  tasks: any[];\n  loading = true;\n  error: any;\n\n  constructor(private apollo: Apollo) {\n  }\n\n  createTask(input: ICreateTaskInput) {\n    return this.apollo.mutate({\n      mutation: CREATE_TASK,\n      variables: {\n        ...input\n      },\n    }).pipe(map(result => result.data))\n  }\n\n  getAll(projectId: string) {\n    return this.apollo.watchQuery<any>({\n      query: QUERY_TASKS,\n      variables: {\n        projectId: projectId,\n      },\n    }).valueChanges.pipe(\n      map(result => result.data.tasks)\n    );\n  }\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "apollo",
+                        "type": "Apollo",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 11,
+                "jsdoctags": [
+                    {
+                        "name": "apollo",
+                        "type": "Apollo",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "type": "injectable"
+        },
+        {
+            "name": "TodoistEffects",
+            "id": "injectable-TodoistEffects-7d18f37c4ea4b14357a953e0aae21126",
+            "file": "src/app/todoist/todoist.effects.ts",
+            "properties": [
+                {
+                    "name": "loadProjects$",
+                    "defaultValue": "createEffect(() =>\n    this.actions$.pipe(\n      ofType(getProjectsAction),\n      mergeMap(() => this.projectService.getAll()\n        .pipe(\n          map(projects => updateProjectsAction({projects: projects})),\n          catchError(() => EMPTY)\n        ))\n    )\n  )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 18
+                },
+                {
+                    "name": "loadTasks$",
+                    "defaultValue": "createEffect(() =>\n    this.actions$.pipe(\n      ofType(getTasksAction),\n      mergeMap(({ projectId }) => this.taskService.getAll(projectId)\n        .pipe(\n          map(tasks => updateTasksAction({tasks: tasks})),\n          catchError(() => EMPTY)\n        ))\n    )\n  )",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 29
+                }
+            ],
+            "methods": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "description": "",
+            "rawdescription": "\n",
+            "sourceCode": "import { Injectable } from '@angular/core';\nimport { Actions, createEffect, ofType } from '@ngrx/effects';\nimport { EMPTY } from 'rxjs';\nimport { map, mergeMap, find, withLatestFrom, catchError} from 'rxjs/operators';\nimport {Store, select} from \"@ngrx/store\";\nimport {\n  getProjectsAction,\n  updateProjectsAction,\n  getTasksAction,\n  updateTasksAction,\n  createTaskAction\n} from \"@todoist/todoist.actions\";\nimport {ProjectService, TaskService} from \"@app/services\";\nimport {getProjects} from \"@todoist/todoist.selectors\";\n\n@Injectable()\nexport class TodoistEffects {\n  loadProjects$ = createEffect(() =>\n    this.actions$.pipe(\n      ofType(getProjectsAction),\n      mergeMap(() => this.projectService.getAll()\n        .pipe(\n          map(projects => updateProjectsAction({projects: projects})),\n          catchError(() => EMPTY)\n        ))\n    )\n  );\n\n  loadTasks$ = createEffect(() =>\n    this.actions$.pipe(\n      ofType(getTasksAction),\n      mergeMap(({ projectId }) => this.taskService.getAll(projectId)\n        .pipe(\n          map(tasks => updateTasksAction({tasks: tasks})),\n          catchError(() => EMPTY)\n        ))\n    )\n  );\n\n  /*createTask$ = createEffect(() =>\n    this.actions$.pipe(\n      ofType(createTaskAction),\n      mergeMap(({ task }) => this.taskService.createTask(task).pipe(\n        map(task => updateTasksAction({tasks: tasks})),\n        catchError(() => EMPTY)\n      ))\n    )\n  );*/\n\n  constructor(\n    private actions$: Actions,\n    private store: Store,\n    private projectService: ProjectService,\n    private taskService: TaskService\n  ) {}\n}\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "actions$",
+                        "type": "Actions",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "projectService",
+                        "type": "ProjectService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "taskService",
+                        "type": "TaskService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 38,
+                "jsdoctags": [
+                    {
+                        "name": "actions$",
+                        "type": "Actions",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "store",
+                        "type": "Store",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "projectService",
+                        "type": "ProjectService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "taskService",
+                        "type": "TaskService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "type": "injectable"
+        }
+    ],
     "guards": [],
     "interceptors": [],
     "classes": [],
@@ -295,7 +795,7 @@
         },
         {
             "name": "AppComponent",
-            "id": "component-AppComponent-ac54ea49c21d5ffaa9cf6075f0c43ddc",
+            "id": "component-AppComponent-dd5302cfeac6fad2d5cfdf6920ccf2d6",
             "file": "src/app/app.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -323,7 +823,18 @@
                     "line": 9
                 }
             ],
-            "methodsClass": [],
+            "methodsClass": [
+                {
+                    "name": "onChangeSearch",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 11,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
             "deprecated": false,
             "deprecationMessage": "",
             "hostBindings": [],
@@ -331,11 +842,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component } from '@angular/core';\r\n\r\n@Component({\r\n  selector: 'app-root',\r\n  templateUrl: './app.component.html'\r\n})\r\n\r\nexport class AppComponent {\r\n  title = 'Todo';\r\n}\r\n",
+            "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-root',\n  templateUrl: './app.component.html'\n})\n\nexport class AppComponent {\n  title = 'Todo';\n\n  onChangeSearch() {\n\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
-            "templateData": "<!-- Header -->\r\n<div class=\"flex flex-col h-screen\">\r\n  <div class=\"flex flex-none toolbar h-12 w-full bg-blue-500\">\r\n    <div class=\"h-full w-full flex items-center px-5\">\r\n      <div class=\"flex flex-none\">\r\n      <span class=\"text-white cursor-pointer\">\r\n        <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\r\n          <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16M4 18h16\"/>\r\n        </svg>\r\n      </span>\r\n      </div>\r\n      <div class=\"flex flex-grow h-full p-2\">\r\n        <div class=\"relative mx-auto h-full\">\r\n          <div class=\"absolute h-full inset-y-0 left-0 pl-2 flex items-center h-full pointer-events-none\">\r\n          <span class=\"text-gray-500 sm:text-sm\">\r\n             <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\"\r\n                  stroke=\"currentColor\">\r\n                <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\r\n                      d=\"M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z\"/>\r\n              </svg>\r\n          </span>\r\n          </div>\r\n          <input type=\"text\" style=\"width: 400px\" name=\"price\" id=\"price\"\r\n                 class=\"block w-full h-full px-10 py-2 sm:text-sm border-0 rounded-sm\"\r\n                 placeholder=\"Search\"/>\r\n        </div>\r\n      </div>\r\n      <div class=\"flex flex-none\">\r\n      <span class=\"text-white cursor-pointer\">\r\n        <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\r\n          <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z\" />\r\n        </svg>\r\n      </span>\r\n      </div>\r\n    </div>\r\n  </div>\r\n  <div class=\"flex flex-grow flex-row w-full\">\r\n    <router-outlet></router-outlet>\r\n  </div>\r\n</div>\r\n\r\n"
+            "templateData": "<!-- Header -->\n<div class=\"flex flex-col h-screen\">\n  <div class=\"flex flex-none toolbar h-12 w-full bg-blue-500\">\n    <div class=\"h-full w-full flex items-center px-5\">\n      <div class=\"flex flex-none\">\n      <span class=\"text-white cursor-pointer\">\n        <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n          <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16M4 18h16\"/>\n        </svg>\n      </span>\n      </div>\n      <div class=\"flex flex-grow h-full p-2\">\n        <div class=\"relative mx-auto h-full\">\n          <div class=\"absolute h-full inset-y-0 left-0 pl-2 flex items-center h-full pointer-events-none\">\n          <span class=\"text-gray-500 sm:text-sm\">\n             <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\"\n                  stroke=\"currentColor\">\n                <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n                      d=\"M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z\"/>\n              </svg>\n          </span>\n          </div>\n          <input (change)=\"onChangeSearch()\"  type=\"text\" style=\"width: 400px\" name=\"price\" id=\"price\" autocomplete=\"off\"\n                 class=\"block w-full h-full px-10 py-2 sm:text-sm border-0 rounded-sm\"\n                 placeholder=\"Search\" />\n        </div>\n      </div>\n      <div class=\"flex flex-none\">\n      <span class=\"text-white cursor-pointer\">\n        <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n          <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z\" />\n        </svg>\n      </span>\n      </div>\n    </div>\n  </div>\n  <div class=\"flex flex-grow flex-row w-full\">\n    <router-outlet></router-outlet>\n  </div>\n</div>\n\n"
         },
         {
             "name": "BreadcrumbComponent",
@@ -438,14 +949,14 @@
                             "flags": 4227072,
                             "modifierFlagsCache": 0,
                             "transformFlags": 0,
-                            "kind": 317,
+                            "kind": 322,
                             "tagName": {
                                 "pos": 712,
                                 "end": 720,
                                 "flags": 4227072,
                                 "modifierFlagsCache": 0,
                                 "transformFlags": 0,
-                                "kind": 78,
+                                "kind": 79,
                                 "escapedText": "required"
                             },
                             "comment": ""
@@ -593,32 +1104,35 @@
         },
         {
             "name": "LeftMenuComponent",
-            "id": "component-LeftMenuComponent-7621507b8a48907f9f85fa17b3d46b89",
+            "id": "component-LeftMenuComponent-05114906cb202ebf1c9761dee3ac821a",
             "file": "src/app/todoist/components/left-menu/left-menu.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
             "outputs": [],
             "providers": [],
-            "selector": "[app-left-menu]",
-            "styleUrls": [],
+            "selector": "left-menu",
+            "styleUrls": [
+                "left-menu.component.scss"
+            ],
             "styles": [],
             "templateUrl": [
                 "./left-menu.component.html"
             ],
             "viewProviders": [],
-            "inputsClass": [
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
                 {
                     "name": "menus",
-                    "defaultValue": "[\n    {name: 'myday', label: 'My Day', active: true, icon: 'sun'},\n    {name: 'important', label: 'Important', active: false, icon: 'star'},\n    {name: 'planned', label: 'Planned', active: false, icon: 'calendar'},\n    {name: 'task', label: 'Task', active: false, icon: 'home'},\n  ]",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 9,
-                    "type": "IMenu[]"
+                    "type": "Observable<IMenu[]>",
+                    "optional": false,
+                    "description": "",
+                    "line": 15
                 }
             ],
-            "outputsClass": [],
-            "propertiesClass": [],
             "methodsClass": [
                 {
                     "name": "ngOnInit",
@@ -626,7 +1140,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 17,
+                    "line": 21,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -638,7 +1152,85 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input, OnInit } from '@angular/core';\nimport {IMenu} from '@app/interface/menu.type'\n\n@Component({\n  selector: '[app-left-menu]',\n  templateUrl: './left-menu.component.html'\n})\nexport class LeftMenuComponent implements OnInit {\n  @Input() menus: IMenu[] = [\n    {name: 'myday', label: 'My Day', active: true, icon: 'sun'},\n    {name: 'important', label: 'Important', active: false, icon: 'star'},\n    {name: 'planned', label: 'Planned', active: false, icon: 'calendar'},\n    {name: 'task', label: 'Task', active: false, icon: 'home'},\n  ]\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport {Store} from '@ngrx/store'\nimport {Observable} from \"rxjs\";\n\nimport {TodoState} from \"@todoist/todoist.reducer\";\nimport {getMenus} from \"@todoist/todoist.selectors\";\nimport {IMenu} from '@app/interface'\n\n@Component({\n  selector: 'left-menu',\n  templateUrl: './left-menu.component.html',\n  styleUrls: ['left-menu.component.scss']\n})\nexport class LeftMenuComponent implements OnInit {\n  menus: Observable<IMenu[]>\n\n  constructor(private store: Store<TodoState>) {\n    this.menus = this.store.select(getMenus);\n  }\n\n  ngOnInit(): void {}\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": ":host {\n  width: 100%;\n}\n",
+                    "styleUrl": "left-menu.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "store",
+                        "type": "Store<TodoState>",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 15,
+                "jsdoctags": [
+                    {
+                        "name": "store",
+                        "type": "Store<TodoState>",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<div class=\"flex flex-col w-full\" xmlns=\"http://www.w3.org/1999/html\">\n  <ul class=\"mt-7 ml-2 pr-2\">\n    <li class=\"hover:bg-gray-100 rounded cursor-pointer\" [ngClass]=\"{'bg-gray-100': menu.active}\" *ngFor=\"let menu of menus | async\">\n      <a routerLink=\"/tasks/{{menu.name}}\" routerLinkActive=\"active\">\n        <div class=\"flex flex-row relative items-center w-full h-9 px-2 py-2 text-sm\">\n          <span class=\"pr-2\">\n             <svg-icon\n               [name]=\"menu.icon\"\n               [size]=\"16\">\n              </svg-icon>\n          </span>\n          <label [ngClass]=\"{'font-medium': menu.active}\" class=\"cursor-pointer\">{{menu.label}}</label>\n          <span *ngIf=\"menu.counter\" class=\"absolute top-0 right-0 p-2\">{{menu.counter}}</span>\n        </div>\n      </a>\n    </li>\n  </ul>\n\n  <ul class=\"mt-4 ml-2 pr-2\">\n    <li class=\"hover:bg-gray-100 rounded cursor-pointer\">\n      <a>\n        <div class=\"flex flex-row relative items-center w-full h-9 px-2 py-2 text-sm\">\n          <span class=\"pr-2\">\n             <svg-icon\n               class=\"text-blue-500\"\n               name=\"list-view\"\n               [size]=\"16\">\n              </svg-icon>\n          </span>\n          <label class=\"cursor-pointer\">Home</label>\n        </div>\n      </a>\n    </li>\n    <li class=\"hover:bg-gray-100 rounded cursor-pointer\">\n      <a>\n        <div class=\"flex flex-row relative items-center w-full h-9 px-2 py-2 text-sm\">\n          <span class=\"pr-2\">\n             <svg-icon\n               class=\"text-blue-500\"\n               name=\"list-view\"\n               [size]=\"16\">\n              </svg-icon>\n          </span>\n          <label class=\"cursor-pointer\">The Corner</label>\n        </div>\n      </a>\n    </li>\n    <li class=\"hover:bg-gray-100 rounded cursor-pointer\">\n      <a>\n        <div class=\"flex flex-row relative items-center w-full h-9 px-2 py-2 text-sm\">\n          <span class=\"pr-2\">\n             <svg-icon\n               class=\"text-blue-500\"\n               name=\"plus\"\n               [size]=\"16\">\n              </svg-icon>\n          </span>\n          <label class=\"cursor-pointer\">Danh sách mới</label>\n        </div>\n      </a>\n    </li>\n  </ul>\n</div>\n<resizer></resizer>\n"
+        },
+        {
+            "name": "NotFoundComponent",
+            "id": "component-NotFoundComponent-fc7c14668a28acb12d057c371a3f7194",
+            "file": "src/app/todoist/pages/not-found/not-found.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-not-found",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./not-found.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 11,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-not-found',\n  templateUrl: './not-found.component.html'\n})\nexport class NotFoundComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -648,12 +1240,12 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 14
+                "line": 7
             },
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<ul class=\"w-full mt-7 ml-5 pr-2\">\n  <li class=\"hover:bg-gray-100 rounded cursor-pointer\" *ngFor=\"let menu of menus\">\n    <a routerLink=\"/tasks/{{menu.name}}\" routerLinkActive=\"active\">\n      <div class=\"flex flex-row items-center w-full h-9 px-2 py-2 text-sm\">\n        <span class=\"pr-2\">\n           <svg-icon\n             [name]=\"menu.icon\"\n             [size]=\"16\">\n            </svg-icon>\n        </span>\n        <label [ngClass]=\"{'font-medium': menu.active}\" class=\"cursor-pointer\">{{menu.label}}</label>\n      </div>\n    </a>\n  </li>\n  <!--<li class=\"hover:bg-gray-100 rounded\">\n    <div class=\"flex flex-row items-center w-full h-9 px-2 py-2 text-sm\">\n      <span class=\"pr-2\">\n        <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-4 w-4\" fill=\"none\" viewBox=\"0 0 24 24\"\n             stroke=\"currentColor\">\n          <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n                d=\"M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z\"/>\n        </svg>\n      </span>\n      <label class=\"\">Important</label>\n    </div>\n  </li>\n  <li class=\"hover:bg-gray-100 rounded\">\n    <div class=\"flex flex-row items-center w-full h-9 px-2 py-2 text-sm\">\n        <span class=\"pr-2\">\n          <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-4 w-4\" fill=\"none\" viewBox=\"0 0 24 24\"\n               stroke=\"currentColor\">\n            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n                  d=\"M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z\"/>\n          </svg>\n        </span>\n      <label class=\"\">Planned</label>\n    </div>\n  </li>\n  <li class=\"hover:bg-gray-100 rounded\">\n    <div class=\"flex flex-row items-center w-full h-9 px-2 py-2 text-sm\">\n      <span class=\"pr-2\">\n        <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-4 w-4\" fill=\"none\" viewBox=\"0 0 24 24\"\n             stroke=\"currentColor\">\n          <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n                d=\"M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6\"/>\n        </svg>\n      </span>\n      <label class=\"\">Task</label>\n    </div>\n  </li>-->\n</ul>\n"
+            "templateData": "<p>not-found works!</p>\n"
         },
         {
             "name": "PageComponent",
@@ -728,6 +1320,213 @@
             "stylesData": ""
         },
         {
+            "name": "ResizerComponent",
+            "id": "component-ResizerComponent-de2d24682142e206740b5547e1c5bb63",
+            "file": "src/app/todoist/components/resizer/resizer.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "resizer",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./resizer.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 10,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, Input, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'resizer',\n  templateUrl: './resizer.component.html'\n})\nexport class ResizerComponent implements OnInit {\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 7
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<div class=\"flex absolute top-0 bottom-0 -right-2 w-5 h-full cursor-move\">\n  <div style=\"width: 2px\" class=\"flex h-full mx-auto hover:bg-blue-500\">\n\n  </div>\n</div>\n"
+        },
+        {
+            "name": "SearchComponent",
+            "id": "component-SearchComponent-b276deb31a088c0aa8c777c50480acee",
+            "file": "src/app/todoist/pages/search/search.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-search",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./search.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-search',\n  templateUrl: './search.component.html'\n})\nexport class SearchComponent {\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "templateData": "<div>\n  Search\n</div>\n"
+        },
+        {
+            "name": "SkeletonComponent",
+            "id": "component-SkeletonComponent-4770f8ef434b59c82bff0dc3de9d07c6",
+            "file": "src/app/todoist/components/skeleton/skeleton.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "todoist-skeleton",
+            "styleUrls": [],
+            "styles": [
+                ":host { width: 100% }"
+            ],
+            "templateUrl": [
+                "./skeleton.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 12,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'todoist-skeleton',\n  templateUrl: './skeleton.component.html',\n  styles: [':host { width: 100% }']\n})\nexport class SkeletonComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": ":host { width: 100% }\n",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 8
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<div class=\"w-full mx-auto\">\n  <div class=\"animate-pulse flex flex-row flex-none items-center w-full justify-between\">\n    <div class=\"space-y-2\">\n      <div class=\"w-10 h-4 rounded bg-gray-200\"></div>\n      <div class=\"w-20 h-4 rounded bg-gray-200\"></div>\n    </div>\n    <div class=\"space-x-4 flex flex-row\">\n      <div class=\"w-20 h-6 rounded bg-gray-200\"></div>\n      <div class=\"w-20 h-6 rounded bg-gray-200\"></div>\n    </div>\n  </div>\n\n  <div class=\"animate-pulse flex space-x-4 mt-5\">\n    <div class=\"rounded-full bg-gray-200 h-8 w-8\"></div>\n    <div class=\"flex-1 space-y-2 py-1\">\n      <div class=\"h-4 bg-gray-200 rounded\"></div>\n      <div class=\"h-4 w-20 bg-gray-200 rounded\"></div>\n    </div>\n  </div>\n  <div class=\"animate-pulse flex space-x-4 mt-5\">\n    <div class=\"rounded-full bg-gray-200 h-8 w-8\"></div>\n    <div class=\"flex-1 space-y-2 py-1\">\n      <div class=\"h-4 bg-gray-200 rounded\"></div>\n      <div class=\"h-4 w-20 bg-gray-200 rounded\"></div>\n    </div>\n  </div>\n  <div class=\"animate-pulse flex space-x-4 mt-5\">\n    <div class=\"rounded-full bg-gray-200 h-8 w-8\"></div>\n    <div class=\"flex-1 space-y-2 py-1\">\n      <div class=\"h-4 bg-gray-200 rounded\"></div>\n      <div class=\"h-4 w-20 bg-gray-200 rounded\"></div>\n    </div>\n  </div>\n</div>\n"
+        },
+        {
+            "name": "SuggestionComponent",
+            "id": "component-SuggestionComponent-572d9b84d06e1f570793aa4473f9e545",
+            "file": "src/app/todoist/components/suggestion/suggestion.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "suggestion",
+            "styleUrls": [
+                "./suggestion.component.scss"
+            ],
+            "styles": [],
+            "templateUrl": [
+                "./suggestion.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 12,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'suggestion',\n  templateUrl: './suggestion.component.html',\n  styleUrls: ['./suggestion.component.scss']\n})\nexport class SuggestionComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": [
+                {
+                    "data": "",
+                    "styleUrl": "./suggestion.component.scss"
+                }
+            ],
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [],
+                "line": 8
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<h3>Suggestions</h3>\n\n"
+        },
+        {
             "name": "SvgDefinitionsComponent",
             "id": "component-SvgDefinitionsComponent-db9a6262062f8fc6649561749859997c",
             "file": "src/app/todoist/components/svg-definitions/svg-definitions.component.ts",
@@ -766,7 +1565,7 @@
                 "args": [],
                 "line": 7
             },
-            "templateData": "<svg width=\"0\"\n     height=\"0\"\n     class=\"hidden\"\n     xmlns=\"http://www.w3.org/2000/svg\"\n     xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <symbol id=\"sun\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n          d=\"M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z\"/>\n  </symbol>\n  <symbol id=\"star\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n          d=\"M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z\"/>\n  </symbol>\n  <symbol id=\"calendar\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n          d=\"M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z\"/>\n  </symbol>\n  <symbol id=\"home\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n          d=\"M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6\"/>\n  </symbol>\n  <symbol id=\"menu\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n      <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16M4 18h16\" />\n  </symbol>\n  <symbol id=\"chevron-down\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\" />\n  </symbol>\n  <symbol id=\"chevron-right\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 5l7 7-7 7\" />\n  </symbol>\n</svg>\n"
+            "templateData": "<svg width=\"0\"\n     height=\"0\"\n     class=\"hidden\"\n     xmlns=\"http://www.w3.org/2000/svg\"\n     xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n  <symbol id=\"sun\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n          d=\"M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z\"/>\n  </symbol>\n  <symbol id=\"star\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n          d=\"M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z\"/>\n  </symbol>\n  <symbol id=\"calendar\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n          d=\"M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z\"/>\n  </symbol>\n  <symbol id=\"home\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n          d=\"M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6\"/>\n  </symbol>\n  <symbol id=\"menu\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n      <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M4 6h16M4 12h16M4 18h16\" />\n  </symbol>\n  <symbol id=\"chevron-down\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M19 9l-7 7-7-7\" />\n  </symbol>\n  <symbol id=\"chevron-right\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 5l7 7-7 7\" />\n  </symbol>\n  <symbol id=\"plus-sm\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 6v6m0 0v6m0-6h6m-6 0H6\" />\n  </symbol>\n  <symbol id=\"plus\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 4v16m8-8H4\" />\n  </symbol>\n  <symbol id=\"close\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\" />\n  </symbol>\n  <symbol id=\"switch-vertical\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4\" />\n  </symbol>\n  <symbol id=\"calculator\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z\" />\n  </symbol>\n  <symbol id=\"light-bulb\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z\" />\n  </symbol>\n  <symbol id=\"bell\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\"\n       stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n          d=\"M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9\"/>\n  </symbol>\n  <symbol id=\"clock\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z\"/>\n  </symbol>\n  <symbol id=\"tag\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n          d=\"M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z\"/>\n  </symbol>\n  <symbol id=\"paper-clip\" xmlns=\"http://www.w3.org/2000/svg\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n    <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\"\n          d=\"M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13\"/>\n  </symbol>\n  <symbol id=\"list-view\" viewBox=\"0 0 48 48\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n    <rect x=\"4\" y=\"6\" width=\"40\" height=\"36\" rx=\"3\" stroke=\"#333\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M4 14H44\" stroke=\"#333\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M20 24H36\" stroke=\"#333\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M20 32H36\" stroke=\"#333\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M12 24H14\" stroke=\"#333\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M12 32H14\" stroke=\"#333\" stroke-width=\"4\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n  </symbol>\n</svg>\n"
         },
         {
             "name": "SvgIconComponent",
@@ -857,7 +1656,7 @@
         },
         {
             "name": "TaskComponent",
-            "id": "component-TaskComponent-643ea7a9b85b3ae4037b5231f334beff",
+            "id": "component-TaskComponent-3bdb8b6a4377a5440b791a7c267746bf",
             "file": "src/app/todoist/components/task/task.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -873,11 +1672,26 @@
             "viewProviders": [],
             "inputsClass": [
                 {
+                    "name": "id",
+                    "defaultValue": "\"\"",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 12,
+                    "type": "string"
+                },
+                {
+                    "name": "status",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "line": 14,
+                    "type": "string"
+                },
+                {
                     "name": "title",
                     "defaultValue": "\"Title\"",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 9,
+                    "line": 13,
                     "type": "string"
                 }
             ],
@@ -890,7 +1704,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 17,
+                    "line": 20,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -900,7 +1714,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 21,
+                    "line": 24,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -910,7 +1724,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 26,
+                    "line": 29,
                     "deprecated": false,
                     "deprecationMessage": ""
                 },
@@ -920,7 +1734,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 30,
+                    "line": 36,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -932,7 +1746,80 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';\nimport { FormControl } from '@angular/forms';\n\n@Component({\n  selector: 'app-task',\n  templateUrl: './task.component.html'\n})\nexport class TaskComponent implements OnInit {\n  @Input() title: string = \"Title\";\n\n  // @Output() onClickTask = new EventEmitter();\n\n  constructor() {\n\n  }\n\n  ngOnInit(): void {\n    console.log('ngOnInit', this.title)\n  }\n\n  onClickTask() {\n    console.log('onClickTask')\n    // this.onClickTask.emit()\n  }\n\n  onClickTaskDone() {\n\n  }\n\n  onClickTaskStar() {\n\n  }\n}\n",
+            "sourceCode": "import {Component, Input, Output, EventEmitter, OnInit} from '@angular/core';\nimport { FormControl } from '@angular/forms';\nimport {Store} from \"@ngrx/store\";\nimport {TodoState} from \"@todoist/todoist.reducer\";\nimport {updateTaskAction} from \"@todoist/todoist.actions\";\n\n@Component({\n  selector: 'app-task',\n  templateUrl: './task.component.html'\n})\nexport class TaskComponent implements OnInit {\n  @Input() id: string = \"\";\n  @Input() title: string = \"Title\";\n  @Input() status: string\n\n  constructor(private store: Store<TodoState>) {\n\n  }\n\n  ngOnInit(): void {\n\n  }\n\n  onClickTask() {\n    console.log('onClickTask')\n\n  }\n\n  onClickTaskDone() {\n    this.store.dispatch(updateTaskAction({\n      id: this.id,\n      status: 'DONE'\n    }))\n  }\n\n  onClickTaskStar() {\n\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": "",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "args": [
+                    {
+                        "name": "store",
+                        "type": "Store<TodoState>",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 14,
+                "jsdoctags": [
+                    {
+                        "name": "store",
+                        "type": "Store<TodoState>",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "implements": [
+                "OnInit"
+            ],
+            "templateData": "<li class=\"w-full flex flex-row border-t bg-white border-gray-100 cursor-pointer hover:bg-indigo-50 hover:border-indigo-50 rounded\">\n  <div class=\"flex flex-none items-center justify-center w-8\"  (click)=\"onClickTaskDone()\">\n    <mat-checkbox matTooltip=\"Đánh dấu hoàn thành\" color=\"primary\"></mat-checkbox>\n  </div>\n  <div class=\"flex flex-col flex-grow px-3 py-2\" (click)=\"onClickTask()\">\n    <label [ngClass]=\"{'line-through': (status === 'DONE')}\" class=\"text-sm\">{{title}}</label>\n    <!--<input type=\"text\" value=\"{{title}}\">-->\n    <div class=\"text-sm\">\n      <span>Tasks</span>\n    </div>\n  </div>\n  <div class=\"flex flex-none items-center justify-center w-8\" (click)=\"onClickTaskStar()\">\n    <svg-icon\n      matTooltip=\"Đánh dấu tác vụ quan trọng\"\n      name=\"star\"\n      [size]=\"16\">\n    </svg-icon>\n  </div>\n</li>\n"
+        },
+        {
+            "name": "TaskDetailComponent",
+            "id": "component-TaskDetailComponent-06c98445544e955acfd4c66c4ea06a1e",
+            "file": "src/app/todoist/components/task-detail/task-detail.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "task-detail",
+            "styleUrls": [],
+            "styles": [],
+            "templateUrl": [
+                "./task-detail.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [],
+            "methodsClass": [
+                {
+                    "name": "ngOnInit",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 11,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'task-detail',\n  templateUrl: './task-detail.component.html'\n})\nexport class TaskDetailComponent implements OnInit {\n\n  constructor() { }\n\n  ngOnInit(): void {\n  }\n\n}\n",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -942,16 +1829,16 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "args": [],
-                "line": 9
+                "line": 7
             },
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<li class=\"w-full flex flex-row border-t bg-white border-gray-100 cursor-pointer hover:bg-indigo-50 hover:border-indigo-50 rounded\">\n  <div class=\"flex flex-none items-center justify-center w-8\"  (click)=\"onClickTaskDone()\">\n    <mat-checkbox matTooltip=\"Đánh dấu hoàn thành\" color=\"primary\"></mat-checkbox>\n  </div>\n  <div class=\"flex flex-col flex-grow px-3 py-2\" (click)=\"onClickTask()\">\n    <label class=\"text-sm\">{{title}}</label>\n    <!--<input type=\"text\" value=\"{{title}}\">-->\n    <div class=\"text-sm\">\n      <span>Tasks</span>\n    </div>\n  </div>\n  <div class=\"flex flex-none items-center justify-center w-8\" (click)=\"onClickTaskStar()\">\n    <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-4 w-4\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n      <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z\" />\n    </svg>\n  </div>\n</li>\n"
+            "templateData": "<div class=\"flex flex-row border-b border-gray-100\">\n  <div class=\"flex flex-none items-center justify-center w-8\">\n    <mat-checkbox matTooltip=\"Đánh dấu hoàn thành\" color=\"primary\"></mat-checkbox>\n  </div>\n  <div class=\"flex flex-col flex-grow py-2\">\n    <label class=\"text-sm cursor-text hover:bg-gray-100 px-3 py-1 rounded\">Hello huhu</label>\n  </div>\n  <div class=\"flex flex-none items-center justify-center w-8 cursor-pointer\">\n    <svg-icon\n      matTooltip=\"Đánh dấu tác vụ quan trọng\"\n      name=\"star\"\n      [size]=\"16\">\n    </svg-icon>\n  </div>\n</div>\n\n<div class=\"flex flex-row border-b border-gray-100 py-2 cursor-pointer hover:bg-gray-50 hover:border-gray-50\">\n  <div class=\"flex flex-none items-center justify-center w-8\">\n    <svg-icon\n      name=\"sun\"\n      [size]=\"16\">\n    </svg-icon>\n  </div>\n  <div class=\"flex flex-col flex-grow px-3 py-2\">\n    <label class=\"text-sm cursor-pointer\">Add to My Day</label>\n  </div>\n</div>\n\n<div class=\"flex flex-row border-b border-gray-100 py-2 cursor-pointer hover:bg-gray-50 hover:border-gray-50\">\n  <div class=\"flex flex-none items-center justify-center w-8\">\n    <svg-icon\n      name=\"bell\"\n      [size]=\"16\">\n    </svg-icon>\n  </div>\n  <div class=\"flex flex-col flex-grow px-3 py-2\">\n    <label class=\"text-sm cursor-pointer\">Remind me</label>\n  </div>\n</div>\n\n<div class=\"flex flex-row border-b border-gray-100 py-2 cursor-pointer hover:bg-gray-50 hover:border-gray-50\">\n  <div class=\"flex flex-none items-center justify-center w-8\">\n    <svg-icon\n      name=\"calendar\"\n      [size]=\"16\">\n    </svg-icon>\n  </div>\n  <div class=\"flex flex-col flex-grow px-3 py-2\">\n    <label class=\"text-sm cursor-pointer\">Add due date</label>\n  </div>\n</div>\n\n<div class=\"flex flex-row border-b border-gray-100 py-2 cursor-pointer hover:bg-gray-50 hover:border-gray-50\">\n  <div class=\"flex flex-none items-center justify-center w-8\">\n    <svg-icon\n      name=\"clock\"\n      [size]=\"16\">\n    </svg-icon>\n  </div>\n  <div class=\"flex flex-col flex-grow px-3 py-2\">\n    <label class=\"text-sm cursor-pointer\">Repeat</label>\n  </div>\n</div>\n\n<div class=\"flex flex-row border-b border-gray-100 py-2 cursor-pointer hover:bg-gray-50 hover:border-gray-50\">\n  <div class=\"flex flex-none items-center justify-center w-8\">\n    <svg-icon\n      name=\"tag\"\n      [size]=\"16\">\n    </svg-icon>\n  </div>\n  <div class=\"flex flex-col flex-grow px-3 py-2\">\n    <label class=\"text-sm cursor-pointer\">Pick a category</label>\n  </div>\n</div>\n\n<div class=\"flex flex-row border-b border-gray-100 py-2 cursor-pointer hover:bg-gray-50 hover:border-gray-50\">\n  <div class=\"flex flex-none items-center justify-center w-8\">\n    <svg-icon\n      name=\"paper-clip\"\n      [size]=\"16\">\n    </svg-icon>\n\n\n  </div>\n  <div class=\"flex flex-col flex-grow px-3 py-2\">\n    <label class=\"text-sm cursor-pointer\">Add file</label>\n  </div>\n</div>\n"
         },
         {
             "name": "TasksComponent",
-            "id": "component-TasksComponent-70e25ae7e56a60c8fcad8bd0646e6b12",
+            "id": "component-TasksComponent-117bb70b628ac46759ff3e3099c71326",
             "file": "src/app/todoist/pages/tasks/tasks.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -971,24 +1858,73 @@
             "outputsClass": [],
             "propertiesClass": [
                 {
+                    "name": "collapseTaskDone",
+                    "defaultValue": "true",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "optional": false,
+                    "description": "",
+                    "line": 28
+                },
+                {
+                    "name": "openDrawer",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "optional": false,
+                    "description": "",
+                    "line": 27
+                },
+                {
+                    "name": "showLoading",
+                    "defaultValue": "true",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "optional": false,
+                    "description": "",
+                    "line": 21
+                },
+                {
+                    "name": "sortBy",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Observable<ISortBy>",
+                    "optional": false,
+                    "description": "",
+                    "line": 26
+                },
+                {
+                    "name": "sorts",
+                    "defaultValue": "TASK_SORT",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ISort[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 25
+                },
+                {
                     "name": "tasks",
-                    "defaultValue": "[\n    {\n      title: \"Hello\",\n      status: 'TODO',\n      important: false,\n      created: new Date()\n    },\n    {\n      title: \"Hello 1\",\n      status: 'TODO',\n      important: false,\n      created: new Date()\n    },\n    {\n      title: \"Hello 2\",\n      status: 'TODO',\n      important: false,\n      created: new Date()\n    },\n    {\n      title: \"Hello 3\",\n      status: 'TODO',\n      important: false,\n      created: new Date()\n    },\n    {\n      title: \"Hello 4\",\n      status: 'TODO',\n      important: false,\n      created: new Date()\n    },\n    {\n      title: \"Hello 5\",\n      status: 'TODO',\n      important: false,\n      created: new Date()\n    }\n  ]",
+                    "defaultValue": "[]",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "ITask[]",
                     "optional": false,
                     "description": "",
-                    "line": 13
+                    "line": 24
                 },
                 {
                     "name": "title",
-                    "defaultValue": "'My day'",
+                    "defaultValue": "\"My day\"",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 11
+                    "line": 22
                 },
                 {
                     "name": "today",
@@ -998,7 +1934,7 @@
                     "type": "number",
                     "optional": false,
                     "description": "",
-                    "line": 12
+                    "line": 23
                 }
             ],
             "methodsClass": [
@@ -1015,7 +1951,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 58,
+                    "line": 67,
                     "deprecated": false,
                     "deprecationMessage": "",
                     "jsdoctags": [
@@ -1031,12 +1967,116 @@
                     ]
                 },
                 {
+                    "name": "getTasksByProjectId",
+                    "args": [
+                        {
+                            "name": "id",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 71,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "id",
+                            "type": "string",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
                     "name": "ngOnInit",
                     "args": [],
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 54,
+                    "line": 63,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "onAddTask",
+                    "args": [
+                        {
+                            "name": "taskName",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 99,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "taskName",
+                            "type": "",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "onClickCollapseTaskDone",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 110,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                },
+                {
+                    "name": "onClickSort",
+                    "args": [
+                        {
+                            "name": "sort",
+                            "type": "ISort",
+                            "deprecated": false,
+                            "deprecationMessage": ""
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 91,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "jsdoctags": [
+                        {
+                            "name": "sort",
+                            "type": "ISort",
+                            "deprecated": false,
+                            "deprecationMessage": "",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "onClickSuggestions",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 95,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -1048,11 +2088,11 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input, OnInit } from '@angular/core';\nimport {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';\nimport {ITask} from \"@app/interface/task.type\";\n\n@Component({\n  selector: 'app-tasks',\n  templateUrl: './tasks.component.html',\n  styleUrls: ['tasks.component.scss']\n})\nexport class TasksComponent implements OnInit {\n  title = 'My day'\n  today: number = Date.now();\n  tasks: ITask[] = [\n    {\n      title: \"Hello\",\n      status: 'TODO',\n      important: false,\n      created: new Date()\n    },\n    {\n      title: \"Hello 1\",\n      status: 'TODO',\n      important: false,\n      created: new Date()\n    },\n    {\n      title: \"Hello 2\",\n      status: 'TODO',\n      important: false,\n      created: new Date()\n    },\n    {\n      title: \"Hello 3\",\n      status: 'TODO',\n      important: false,\n      created: new Date()\n    },\n    {\n      title: \"Hello 4\",\n      status: 'TODO',\n      important: false,\n      created: new Date()\n    },\n    {\n      title: \"Hello 5\",\n      status: 'TODO',\n      important: false,\n      created: new Date()\n    }\n  ]\n\n  constructor() { }\n\n  ngOnInit(): void {\n\n  }\n\n  drop(event: CdkDragDrop<string[]>) {\n    moveItemInArray(this.tasks, event.previousIndex, event.currentIndex);\n  }\n}\n",
+            "sourceCode": "import { Component, OnInit } from '@angular/core';\nimport {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';\nimport {Router, ActivatedRoute, NavigationEnd} from \"@angular/router\";\nimport { Observable } from 'rxjs';\nimport {Store} from '@ngrx/store';\n\nimport {ISort, ITask, ISortBy} from \"@app/interface/task.type\";\nimport {TaskService} from \"@app/services/task.service\";\nimport {TASK_SORT} from \"@todoist/config/const\";\n\nimport {getProjectsAction, changeSortBy, createTaskAction, getTasksAction, changeMenuAction} from \"@todoist/todoist.actions\";\nimport {TodoState} from '@app/todoist/todoist.reducer'\nimport {getProjects, getTasks, getSortBy} from '@app/todoist/todoist.selectors'\n\n@Component({\n  selector: 'app-tasks',\n  templateUrl: './tasks.component.html',\n  styleUrls: ['tasks.component.scss']\n})\nexport class TasksComponent implements OnInit {\n  showLoading: boolean = true;\n  title: string = \"My day\";\n  today: number = Date.now();\n  tasks: ITask[] = [];\n  sorts: ISort[] = TASK_SORT;\n  sortBy: Observable<ISortBy>;\n  openDrawer: boolean = false;\n  collapseTaskDone: boolean = true;\n\n  constructor(\n    private taskService: TaskService,\n    private store: Store<TodoState>,\n    private router: Router,\n    private route: ActivatedRoute) {\n    let id = this.route.snapshot.paramMap.get('taskId');\n\n    if (id) {\n      this.getTasksByProjectId(id);\n    }\n\n    // Check route change\n    router.events.subscribe((val) => {\n      if (val instanceof NavigationEnd) {\n        const id = this.route.snapshot.paramMap.get('taskId');\n\n        if (id) {\n          this.getTasksByProjectId(id);\n        }\n      }\n    })\n\n    this.sortBy = store.select(getSortBy)\n\n    // Tasks from store\n    store.select(getTasks).subscribe((tasks) => {\n      this.tasks = [].concat(tasks);\n\n      // @todo\n      this.showLoading = false;\n    })\n  }\n\n  ngOnInit(): void {\n    this.store.dispatch(getProjectsAction());\n  }\n\n  drop(event: CdkDragDrop<string[]>) {\n    moveItemInArray(this.tasks, event.previousIndex, event.currentIndex);\n  }\n\n  getTasksByProjectId(id: string) {\n    if (id) {\n      // Update menu active\n      this.store.dispatch(changeMenuAction({\n        id: id\n      }))\n\n      this.store.select(getProjects).subscribe((projects) => {\n        const project = projects.find((project) => project.name === id || project.id === id);\n\n        if (project) {\n          const {id: projectId, title} = project;\n          this.title = title\n\n          this.store.dispatch(getTasksAction({projectId: projectId}));\n        }\n      })\n    }\n  }\n\n  onClickSort(sort: ISort) {\n    this.store.dispatch(changeSortBy(sort))\n  }\n\n  onClickSuggestions() {\n    this.openDrawer = !this.openDrawer;\n  }\n\n  onAddTask(taskName) {\n    if (taskName) {\n      this.store.dispatch(createTaskAction({\n        task: {\n          title: taskName,\n          status: 'TODO'\n        }\n      }));\n    }\n  }\n\n  onClickCollapseTaskDone() {\n    this.collapseTaskDone = !this.collapseTaskDone;\n  }\n}\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ":host {\r\n  width: 100%;\r\n}\r\n",
+                    "data": ":host {\n  width: 100%;\n}\n",
                     "styleUrl": "tasks.component.scss"
                 }
             ],
@@ -1062,25 +2102,145 @@
                 "description": "",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "args": [],
-                "line": 50
+                "args": [
+                    {
+                        "name": "taskService",
+                        "type": "TaskService",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "store",
+                        "type": "Store<TodoState>",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "router",
+                        "type": "Router",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    },
+                    {
+                        "name": "route",
+                        "type": "ActivatedRoute",
+                        "deprecated": false,
+                        "deprecationMessage": ""
+                    }
+                ],
+                "line": 28,
+                "jsdoctags": [
+                    {
+                        "name": "taskService",
+                        "type": "TaskService",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "store",
+                        "type": "Store<TodoState>",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "router",
+                        "type": "Router",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "route",
+                        "type": "ActivatedRoute",
+                        "deprecated": false,
+                        "deprecationMessage": "",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
             },
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<div class=\"flex w-full h-full\">\n  <div class=\"flex none bg-gray-50 w-72\" app-left-menu></div>\n  <div class=\"flex flex-col flex-grow p-7\">\n    <div class=\"flex flex-row flex-none w-full justify-between\">\n      <div class=\"\">\n        <h1 class=\"\">{{title}}</h1>\n        <span class=\"text-xs\">{{today | date}}</span>\n      </div>\n      <div class=\"flex flex-row text-sm\">\n        <div class=\"flex flex-row cursor-pointer p-2 h-9 rounded hover:bg-gray-100\" [matMenuTriggerFor]=\"menu\">\n          <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-5 w-5\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4\" />\n          </svg>\n          <label class=\"pl-2 cursor-pointer\">Sort</label>\n          <mat-menu #menu=\"matMenu\">\n            <button mat-menu-item>\n              <div class=\"flex flex-row items-center\">\n                <svg-icon\n                  name=\"star\"\n                  [size]=\"16\">\n                </svg-icon>\n                <span>Tầm quan trọng</span>\n              </div>\n            </button>\n            <button mat-menu-item>\n              <div class=\"flex flex-row items-center\">\n                <svg-icon\n                  name=\"star\"\n                  [size]=\"16\">\n                </svg-icon>\n                <span>Ngày đến hạn</span>\n              </div>\n            </button>\n            <button mat-menu-item>Theo thứ tự bảng chữ cái</button>\n            <button mat-menu-item>Ngày tạo</button>\n          </mat-menu>\n        </div>\n\n        <div class=\"flex flex-row cursor-pointer p-2 h-9 rounded hover:bg-gray-100\">\n          <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-5 w-5\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z\" />\n          </svg>\n          <label class=\"pl-2 cursor-pointer\">Suggestions</label>\n        </div>\n      </div>\n    </div>\n    <div class=\"flex flex-grow flex-col mt-5\">\n      <add-task></add-task>\n\n      <ul class=\"w-full\" *ngIf=\"tasks.length\">\n        <div cdkDropList class=\"example-list\" (cdkDropListDropped)=\"drop($event)\">\n          <app-task *ngFor=\"let task of tasks\" [title]=\"task.title\" cdkDrag></app-task>\n        </div>\n      </ul>\n      <div class=\"w-full flex flex-row cursor-text\">\n        <div class=\"flex flex-none items-center justify-center w-8\">\n          <svg-icon\n            name=\"chevron-down\"\n            [size]=\"16\">\n          </svg-icon>\n        </div>\n        <div class=\"flex flex-col flex-grow px-3 py-2\">\n          <label class=\"text-sm cursor-text\">Đã hoàn thành</label>\n        </div>\n      </div>\n      <ul class=\"w-full\">\n        <app-task *ngFor=\"let task of tasks\" [title]=\"task.title\"></app-task>\n      </ul>\n    </div>\n  </div>\n  <div class=\"flex none bg-gray-50 w-80 p-3\">\n    <div class=\"w-full border border-gray-100 rounded p-3 bg-white\">\n      <div class=\"flex flex-row border-b border-gray-100\">\n        <div class=\"flex flex-none items-center justify-center w-8\">\n          <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-6 w-6\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z\" />\n          </svg>\n        </div>\n        <div class=\"flex flex-col flex-grow px-3 py-2\">\n          <label class=\"text-sm\">Upload khóa học 200lab lên youtube</label>\n        </div>\n        <div class=\"flex flex-none items-center justify-center w-8\">\n          <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-4 w-4\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z\" />\n          </svg>\n        </div>\n      </div>\n      <div class=\"flex flex-row border-b border-gray-100 py-2\">\n        <div class=\"flex flex-none items-center justify-center w-8\">\n          <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-4 w-4\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z\" />\n          </svg>\n        </div>\n        <div class=\"flex flex-col flex-grow px-3 py-2\">\n          <label class=\"text-sm cursor-text\">Add to My Day</label>\n        </div>\n      </div>\n      <div class=\"flex flex-row border-b border-gray-100 py-2\">\n        <div class=\"flex flex-none items-center justify-center w-8\">\n          <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-4 w-4\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9\" />\n          </svg>\n        </div>\n        <div class=\"flex flex-col flex-grow px-3 py-2\">\n          <label class=\"text-sm cursor-text\">Remind me</label>\n        </div>\n      </div>\n      <div class=\"flex flex-row border-b border-gray-100 py-2\">\n        <div class=\"flex flex-none items-center justify-center w-8\">\n          <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-4 w-4\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z\" />\n          </svg>\n        </div>\n        <div class=\"flex flex-col flex-grow px-3 py-2\">\n          <label class=\"text-sm cursor-text\">Add due date</label>\n        </div>\n      </div>\n\n      <div class=\"flex flex-row border-b border-gray-100 py-2\">\n        <div class=\"flex flex-none items-center justify-center w-8\">\n          <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-4 w-4\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z\" />\n          </svg>\n        </div>\n        <div class=\"flex flex-col flex-grow px-3 py-2\">\n          <label class=\"text-sm cursor-text\">Repeat</label>\n        </div>\n      </div>\n\n      <div class=\"flex flex-row border-b border-gray-100 py-2\">\n        <div class=\"flex flex-none items-center justify-center w-8\">\n          <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-4 w-4\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z\" />\n          </svg>\n        </div>\n        <div class=\"flex flex-col flex-grow px-3 py-2\">\n          <label class=\"text-sm cursor-text\">Pick a category</label>\n        </div>\n      </div>\n\n      <div class=\"flex flex-row border-b border-gray-100 py-2\">\n        <div class=\"flex flex-none items-center justify-center w-8\">\n          <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-4 w-4\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\">\n            <path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13\" />\n          </svg>\n        </div>\n        <div class=\"flex flex-col flex-grow px-3 py-2\">\n          <label class=\"text-sm cursor-text\">Add file</label>\n        </div>\n      </div>\n\n    </div>\n  </div>\n</div>\n<svg-definitions></svg-definitions>\n"
+            "templateData": "<div class=\"flex w-full h-full\">\n  <div class=\"flex flex-col flex-grow p-7 bg-white\">\n    <todoist-skeleton *ngIf=\"showLoading\"></todoist-skeleton>\n\n    <div *ngIf=\"!showLoading\">\n      <div class=\"flex flex-row flex-none w-full justify-between\">\n        <div class=\"\">\n          <h1 class=\"\">{{title}}</h1>\n          <span class=\"text-xs\">{{today | date}}</span>\n        </div>\n        <div class=\"flex flex-row text-sm\">\n          <div class=\"flex flex-row items-center cursor-pointer p-2 h-9 rounded hover:bg-gray-100\" [matMenuTriggerFor]=\"menu\">\n            <svg-icon\n              name=\"switch-vertical\"\n              [size]=\"16\">\n            </svg-icon>\n            <label class=\"pl-2 cursor-pointer\">Sort</label>\n            <mat-menu #menu=\"matMenu\">\n              <button mat-menu-item *ngFor=\"let sort of sorts\" (click)=\"onClickSort(sort)\">\n                <div class=\"flex flex-row items-center\">\n                  <svg-icon\n                    *ngIf=\"sort.icon\"\n                    [name]=\"sort.icon\"\n                    [size]=\"16\">\n                  </svg-icon>\n                  <span class=\"pl-2\">{{sort.title}}</span>\n                </div>\n              </button>\n            </mat-menu>\n          </div>\n\n          <div (click)=\"onClickSuggestions()\"\n               class=\"flex flex-row items-center cursor-pointer p-2 h-9 rounded hover:bg-gray-100\">\n            <svg-icon\n              name=\"light-bulb\"\n              [size]=\"16\">\n            </svg-icon>\n            <label class=\"pl-2 cursor-pointer\">Suggestions</label>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"flex w-full justify-end\" *ngIf=\"(sortBy | async)?.name\">\n        <div class=\"flex flex-row\">\n        <span class=\"flex items-center pr-1 cursor-pointer\">\n           <svg-icon\n             name=\"chevron-down\"\n             [size]=\"16\">\n           </svg-icon>\n        </span>\n          <span class=\"text-xs font-medium\">Đã sắp xếp theo thứ tự bảng chữ cái</span>\n          <span class=\"flex items-center pl-1 cursor-pointer\">\n           <svg-icon\n             name=\"close\"\n             [size]=\"12\">\n           </svg-icon>\n        </span>\n        </div>\n      </div>\n\n      <div class=\"flex flex-grow flex-col mt-5\">\n        <add-task (onAddTask)=\"onAddTask($event)\"></add-task>\n\n        <div class=\"overflow-y-auto\">\n          <ul class=\"w-full\" *ngIf=\"tasks.length\">\n            <div cdkDropList class=\"example-list\" (cdkDropListDropped)=\"drop($event)\">\n              <app-task\n                *ngFor=\"let task of tasks\"\n                [title]=\"task.title\"\n                [status]=\"task.status\"\n                cdkDrag\n              ></app-task>\n            </div>\n          </ul>\n\n          <div (click)=\"onClickCollapseTaskDone()\" [ngClass]=\"{'border-b': collapseTaskDone}\" class=\"w-full flex flex-row hover:bg-gray-50 cursor-text cursor-pointer cursor-pointer border-t border-gray-100\">\n            <div class=\"flex flex-none items-center justify-center w-8\">\n              <svg-icon\n                matTooltip=\"Thu gọn nhóm nhiệm vụ\"\n                [ngClass]=\"{'-rotate-90': collapseTaskDone}\"\n                class=\"transform cursor-pointer hover:bg-gray-100 rounded-sm p-1\"\n                name=\"chevron-down\"\n                [size]=\"16\">\n              </svg-icon>\n            </div>\n            <div class=\"flex flex-row flex-grow px-3 py-4 cursor-pointer\">\n              <label class=\"text-sm cursor-pointer font-semibold\">Đã hoàn thành</label>\n              <span class=\"flex pl-2 text-sm\">12</span>\n            </div>\n          </div>\n\n          <ul class=\"w-full\" *ngIf=\"!collapseTaskDone\">\n            <app-task *ngFor=\"let task of tasks\" [title]=\"task.title\"></app-task>\n          </ul>\n        </div>\n      </div>\n    </div>\n  </div>\n\n  <div class=\"flex none bg-gray-50 w-80 p-3\">\n    <div class=\"w-full border border-gray-100 rounded p-3 bg-white\">\n      <task-detail></task-detail>\n    </div>\n  </div>\n</div>\n"
+        },
+        {
+            "name": "TodoistComponent",
+            "id": "component-TodoistComponent-0321ab4ac31aeb429d164ad8e7c64193",
+            "file": "src/app/todoist/todoist.component.ts",
+            "encapsulation": [],
+            "entryComponents": [],
+            "inputs": [],
+            "outputs": [],
+            "providers": [],
+            "selector": "app-todoist",
+            "styleUrls": [],
+            "styles": [
+                ":host { width: 100% }"
+            ],
+            "templateUrl": [
+                "./todoist.component.html"
+            ],
+            "viewProviders": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "propertiesClass": [
+                {
+                    "name": "openDrawer",
+                    "defaultValue": "false",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "boolean",
+                    "optional": false,
+                    "description": "",
+                    "line": 9
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "onClickSuggestions",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 11,
+                    "deprecated": false,
+                    "deprecationMessage": ""
+                }
+            ],
+            "deprecated": false,
+            "deprecationMessage": "",
+            "hostBindings": [],
+            "hostListeners": [],
+            "description": "",
+            "rawdescription": "\n",
+            "type": "component",
+            "sourceCode": "import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-todoist',\n  templateUrl: './todoist.component.html',\n  styles: [':host { width: 100% }']\n})\nexport class TodoistComponent {\n  openDrawer: boolean = false;\n\n  onClickSuggestions() {\n    this.openDrawer = !this.openDrawer;\n  }\n}\n",
+            "assetsDirs": [],
+            "styleUrlsData": "",
+            "stylesData": ":host { width: 100% }\n",
+            "templateData": "<div class=\"flex w-full h-full\">\n  <div class=\"flex none bg-gray-50 w-72 relative\">\n    <left-menu></left-menu>\n  </div>\n  <mat-drawer-container hasBackdrop=\"false\" class=\"flex flex-grow\">\n    <mat-drawer-content>\n      <router-outlet></router-outlet>\n    </mat-drawer-content>\n    <mat-drawer mode=\"over\" position=\"end\" class=\"w-80\" [opened]=\"openDrawer\">\n      <div class=\"relative p-5\">\n        <span (click)=\"onClickSuggestions()\" class=\"absolute top-5 right-5 cursor-pointer hover:opacity-80\">\n          <svg-icon\n            name=\"close\"\n            [size]=\"16\">\n          </svg-icon>\n        </span>\n        <suggestion></suggestion>\n      </div>\n    </mat-drawer>\n  </mat-drawer-container>\n</div>\n<svg-definitions></svg-definitions>\n"
         }
     ],
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-c989957ad5f4633b52e83e97238dbdbb",
+            "id": "module-AppModule-f61677565be000c1782bcc3af77f037f",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\r\nimport { BrowserModule } from '@angular/platform-browser';\r\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\r\nimport { StoreModule } from '@ngrx/store';\r\nimport { AppRoutingModule } from './app-routing.module';\r\nimport { AppComponent } from './app.component';\r\n\r\n// Reducer\r\nimport * as appReducer from './app.reducer';\r\n\r\n@NgModule({\r\n  declarations: [\r\n    AppComponent\r\n  ],\r\n  imports: [\r\n    BrowserModule,\r\n    AppRoutingModule,\r\n    BrowserAnimationsModule,\r\n    StoreModule.forRoot({ app: appReducer.reducer })\r\n  ],\r\n  providers: [],\r\n  bootstrap: [AppComponent]\r\n})\r\n\r\nexport class AppModule { }\r\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { BrowserModule } from '@angular/platform-browser';\nimport { HttpClientModule } from '@angular/common/http';\nimport { BrowserAnimationsModule } from '@angular/platform-browser/animations';\nimport {StoreDevtoolsModule} from \"@ngrx/store-devtools\";\nimport {StoreModule} from \"@ngrx/store\";\nimport { AppRoutingModule } from './app-routing.module';\nimport { GraphQLModule } from './graphql.module';\nimport { AppComponent } from './app.component';\n\n@NgModule({\n  declarations: [\n    AppComponent\n  ],\n  imports: [\n    BrowserModule,\n    AppRoutingModule,\n    BrowserAnimationsModule,\n    HttpClientModule,\n    GraphQLModule,\n    StoreModule.forRoot({}, {}),\n    StoreDevtoolsModule.instrument({\n      maxAge: 25, // Retains last 25 states\n      logOnly: false, // Restrict extension to log-only mode\n      autoPause: true, // Pauses recording actions and state changes when the extension window is not open\n    }),\n  ],\n  providers: [],\n  bootstrap: [AppComponent]\n})\n\nexport class AppModule { }\n",
             "children": [
                 {
                     "type": "providers",
@@ -1099,6 +2259,9 @@
                     "elements": [
                         {
                             "name": "AppRoutingModule"
+                        },
+                        {
+                            "name": "GraphQLModule"
                         }
                     ]
                 },
@@ -1122,13 +2285,13 @@
         },
         {
             "name": "AppRoutingModule",
-            "id": "module-AppRoutingModule-3508f8e5b2b67a41ce1bfb2b4e3da31e",
+            "id": "module-AppRoutingModule-06d134546a4c3cb79b2be8ad090f39c4",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/app-routing.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\r\nimport { RouterModule, Routes } from '@angular/router';\r\n\r\nconst routes: Routes = [\r\n  {\r\n    path: '',\r\n    loadChildren: () => \"import('./todoist/todoist.module').then((m) => m.TodoistModule)\"\r\n  },\r\n  /*{\r\n    path: '**',\r\n    component: PageNotFoundComponent\r\n  },  // Wildcard route for a 404 page*/\r\n];\r\n\r\n@NgModule({\r\n  imports: [RouterModule.forRoot(routes)],\r\n  exports: [RouterModule]\r\n})\r\n\r\nexport class AppRoutingModule { }\r\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\n\nconst routes: Routes = [\n  {\n    path: 'tasks',\n    loadChildren: () => \"import('./todoist/todoist.module').then((m) => m.TodoistModule)\"\n  },\n  {\n    path: '',\n    redirectTo: 'tasks/myday',\n    pathMatch: 'full'\n  }\n];\n\n@NgModule({\n  imports: [RouterModule.forRoot(routes)],\n  exports: [RouterModule]\n})\n\nexport class AppRoutingModule { }\n",
             "children": [
                 {
                     "type": "providers",
@@ -1157,14 +2320,14 @@
             ]
         },
         {
-            "name": "TaskRoutingModule",
-            "id": "module-TaskRoutingModule-0bef00895f767a2b4f35305e51f22dd9",
+            "name": "GraphQLModule",
+            "id": "module-GraphQLModule-164edd3a3c4767c299caacad9fb823b0",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
-            "file": "src/app/todoist/todoist-routing.module.ts",
+            "file": "src/app/graphql.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\r\nimport { RouterModule, Routes } from '@angular/router';\r\nimport { TasksComponent } from './pages/tasks/tasks.component';\r\n\r\nconst routes: Routes = [\r\n  {\r\n    path: 'tasks/:taskId',\r\n    component: TasksComponent\r\n  },\r\n  {\r\n    path: '',\r\n    redirectTo: 'tasks/myday',\r\n    pathMatch: 'full'\r\n  }\r\n];\r\n\r\n@NgModule({\r\n  imports: [RouterModule.forChild(routes)],\r\n  exports: [RouterModule]\r\n})\r\nexport class TaskRoutingModule {}\r\n",
+            "sourceCode": "import {NgModule} from '@angular/core';\nimport {APOLLO_OPTIONS} from 'apollo-angular';\nimport {ApolloClientOptions, InMemoryCache} from '@apollo/client/core';\nimport {HttpLink} from 'apollo-angular/http';\nimport {environment} from \"../environments/environment\";\n\nconst uri = `${environment.apiUrl}graphql`;\nexport function createApollo(httpLink: HttpLink): ApolloClientOptions<any> {\n  return {\n    link: httpLink.create({uri}),\n    cache: new InMemoryCache(),\n  };\n}\n\n@NgModule({\n  providers: [\n    {\n      provide: APOLLO_OPTIONS,\n      useFactory: createApollo,\n      deps: [HttpLink],\n    },\n  ],\n})\nexport class GraphQLModule {}\n",
             "children": [
                 {
                     "type": "providers",
@@ -1194,13 +2357,13 @@
         },
         {
             "name": "TodoistModule",
-            "id": "module-TodoistModule-7a5bf6b6bbf0e14bddaa6f65aff6087a",
+            "id": "module-TodoistModule-cdb8485c318fa3e2ffae3ebfcbc2aed8",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
             "file": "src/app/todoist/todoist.module.ts",
             "methods": [],
-            "sourceCode": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport {ReactiveFormsModule} from \"@angular/forms\";\nimport {DragDropModule} from \"@angular/cdk/drag-drop\";\nimport { TaskRoutingModule } from './todoist-routing.module';\nimport {MatMenuModule} from \"@angular/material/menu\";\nimport {MatRadioModule} from \"@angular/material/radio\";\nimport {MatCheckboxModule} from \"@angular/material/checkbox\";\nimport {MatTooltipModule} from \"@angular/material/tooltip\";\n\nimport { TasksComponent } from './pages/tasks/tasks.component';\nimport { TaskComponent } from './components/task/task.component'\nimport { AddTaskComponent } from './components/add-task/add-task.component';\nimport { LeftMenuComponent } from './components/left-menu/left-menu.component';\nimport { SvgDefinitionsComponent } from './components/svg-definitions/svg-definitions.component';\nimport { SvgIconComponent } from './components/svg-icon/svg-icon.component'\n\n@NgModule({\n  declarations: [\n    TasksComponent,\n    TaskComponent,\n    LeftMenuComponent,\n    SvgDefinitionsComponent,\n    SvgIconComponent,\n    AddTaskComponent\n  ],\n  imports: [\n    CommonModule,\n    ReactiveFormsModule,\n    DragDropModule,\n    MatMenuModule,\n    MatCheckboxModule,\n    TaskRoutingModule,\n    MatRadioModule,\n    MatTooltipModule,\n  ]\n})\nexport class TodoistModule { }\n",
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport {ReactiveFormsModule} from \"@angular/forms\";\nimport {DragDropModule} from \"@angular/cdk/drag-drop\";\nimport {StoreModule} from \"@ngrx/store\";\nimport { EffectsModule } from '@ngrx/effects';\n\nimport { TodoistRoutingModule } from './todoist-routing.module';\nimport {MatMenuModule} from \"@angular/material/menu\";\nimport {MatRadioModule} from \"@angular/material/radio\";\nimport {MatCheckboxModule} from \"@angular/material/checkbox\";\nimport {MatTooltipModule} from \"@angular/material/tooltip\";\nimport {MatSidenavModule} from \"@angular/material/sidenav\";\nimport {MatButtonModule} from \"@angular/material/button\";\n\nimport { TodoistComponent } from \"@todoist/todoist.component\";\nimport { TasksComponent } from './pages/tasks/tasks.component';\nimport { SearchComponent } from \"@todoist/pages/search/search.component\";\nimport { TaskComponent } from './components/task/task.component'\nimport { AddTaskComponent } from './components/add-task/add-task.component';\nimport { LeftMenuComponent } from './components/left-menu/left-menu.component';\nimport { ResizerComponent } from \"./components/resizer/resizer.component\";\nimport { SvgDefinitionsComponent } from './components/svg-definitions/svg-definitions.component';\nimport { SvgIconComponent } from './components/svg-icon/svg-icon.component'\nimport { NotFoundComponent } from './pages/not-found/not-found.component';\nimport { SuggestionComponent } from './components/suggestion/suggestion.component';\nimport { TaskDetailComponent } from './components/task-detail/task-detail.component';\nimport { SkeletonComponent } from \"./components/skeleton/skeleton.component\";\n\nimport {TODO_FEATURE_KEY, totoReducer} from \"./todoist.reducer\";\nimport {TodoistEffects} from \"@todoist/todoist.effects\";\n\n@NgModule({\n  declarations: [\n    TodoistComponent,\n    TasksComponent,\n    SearchComponent,\n    TaskComponent,\n    LeftMenuComponent,\n    ResizerComponent,\n    SvgDefinitionsComponent,\n    SvgIconComponent,\n    AddTaskComponent,\n    NotFoundComponent,\n    SuggestionComponent,\n    TaskDetailComponent,\n    SkeletonComponent,\n  ],\n  imports: [\n    CommonModule,\n    ReactiveFormsModule,\n    DragDropModule,\n    MatMenuModule,\n    MatCheckboxModule,\n    MatRadioModule,\n    MatTooltipModule,\n    MatSidenavModule,\n    MatButtonModule,\n    TodoistRoutingModule,\n    StoreModule.forFeature(TODO_FEATURE_KEY, totoReducer),\n    EffectsModule.forRoot([TodoistEffects])\n  ]\n})\nexport class TodoistModule { }\n",
             "children": [
                 {
                     "type": "providers",
@@ -1216,6 +2379,21 @@
                             "name": "LeftMenuComponent"
                         },
                         {
+                            "name": "NotFoundComponent"
+                        },
+                        {
+                            "name": "ResizerComponent"
+                        },
+                        {
+                            "name": "SearchComponent"
+                        },
+                        {
+                            "name": "SkeletonComponent"
+                        },
+                        {
+                            "name": "SuggestionComponent"
+                        },
+                        {
                             "name": "SvgDefinitionsComponent"
                         },
                         {
@@ -1225,7 +2403,13 @@
                             "name": "TaskComponent"
                         },
                         {
+                            "name": "TaskDetailComponent"
+                        },
+                        {
                             "name": "TasksComponent"
+                        },
+                        {
+                            "name": "TodoistComponent"
                         }
                     ]
                 },
@@ -1233,9 +2417,45 @@
                     "type": "imports",
                     "elements": [
                         {
-                            "name": "TaskRoutingModule"
+                            "name": "TodoistRoutingModule"
                         }
                     ]
+                },
+                {
+                    "type": "exports",
+                    "elements": []
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
+        },
+        {
+            "name": "TodoistRoutingModule",
+            "id": "module-TodoistRoutingModule-c2405213de2153a535c271c1bebf7a85",
+            "description": "",
+            "deprecationMessage": "",
+            "deprecated": false,
+            "file": "src/app/todoist/todoist-routing.module.ts",
+            "methods": [],
+            "sourceCode": "import { NgModule } from '@angular/core';\nimport { RouterModule, Routes } from '@angular/router';\n\n// Components\nimport {TodoistComponent} from \"@todoist/todoist.component\";\nimport {TasksComponent} from \"@todoist/pages/tasks/tasks.component\";\nimport {SearchComponent} from \"@todoist/pages/search/search.component\";\n\nconst routes: Routes = [\n  {\n    path: '',\n    component: TodoistComponent,\n    children: [\n      {\n        path: 'search',\n        component: SearchComponent\n      },\n      {\n        path: 'search/:keyword',\n        component: SearchComponent\n      },\n      {\n        path: ':taskId',\n        component: TasksComponent\n      }\n    ]\n  },\n];\n\n@NgModule({\n  imports: [RouterModule.forChild(routes)],\n  exports: [RouterModule]\n})\nexport class TodoistRoutingModule {}\n",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": []
+                },
+                {
+                    "type": "imports",
+                    "elements": []
                 },
                 {
                     "type": "exports",
@@ -1255,14 +2475,24 @@
     "miscellaneous": {
         "variables": [
             {
-                "name": "_counterReducer",
+                "name": "changeMenuAction",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/app.reducer.ts",
+                "file": "src/app/todoist/todoist.actions.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "createReducer(\r\n  initialState,\r\n  on(increment, (state) => ({...state, counter: state.counter + 1})),\r\n  on(decrement, (state) => ({...state, counter: state.counter - 1})),\r\n  on(reset, (state) => ({...state, counter: 0})),\r\n)"
+                "defaultValue": "createAction('[Todoist] Change Menu', props<{id: string}>())"
+            },
+            {
+                "name": "changeSortBy",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/todoist/todoist.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction('[Todoist] Change Sort By', props<ISort>())"
             },
             {
                 "name": "context",
@@ -1275,14 +2505,34 @@
                 "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
             },
             {
-                "name": "decrement",
+                "name": "CREATE_TASK",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/app.actions.ts",
+                "file": "src/app/graphql.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "createAction('[Counter Component] Decrement')"
+                "defaultValue": "gql`\n  mutation createTask($title: String!, $description: String) {\n    createTask(input: {\n      data: {\n        title: $title,\n        description: $description\n      }\n    }) {\n      task {\n        title\n      }\n    }\n  }\n`"
+            },
+            {
+                "name": "createTaskAction",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/todoist/todoist.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction('[Todoist] Create Task', props<{task: ITask}>())"
+            },
+            {
+                "name": "DEFAULT_MENU",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/todoist/config/const.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "IMenu[]",
+                "defaultValue": "[\n  {name: 'myday', label: 'My Day', active: true, icon: 'sun', counter: 0},\n  {name: 'important', label: 'Important', active: false, icon: 'star', counter: 0},\n  {name: 'planned', label: 'Planned', active: false, icon: 'calendar', counter: 0},\n  {name: 'task', label: 'Task', active: false, icon: 'home', counter: 0},\n]"
             },
             {
                 "name": "environment",
@@ -1292,7 +2542,7 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\r\n  production: true\r\n}"
+                "defaultValue": "{\n  production: true,\n  apiUrl: 'https://todoist.tuando.net/'\n}"
             },
             {
                 "name": "environment",
@@ -1302,27 +2552,77 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "object",
-                "defaultValue": "{\r\n  production: false\r\n}"
+                "defaultValue": "{\n  production: false,\n  apiUrl: 'http://localhost:1338/'\n}"
             },
             {
-                "name": "increment",
+                "name": "getMenus",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/app.actions.ts",
+                "file": "src/app/todoist/todoist.selectors.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
-                "defaultValue": "createAction('[Counter Component] Increment')"
+                "defaultValue": "createSelector(todoSelector, state => {\n  return state.menus\n})"
+            },
+            {
+                "name": "getProjects",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/todoist/todoist.selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createSelector(todoSelector, state => {\n  return state.projects\n})"
+            },
+            {
+                "name": "getProjectsAction",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/todoist/todoist.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction('[Todoist] Get Projects')"
+            },
+            {
+                "name": "getSortBy",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/todoist/todoist.selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createSelector(todoSelector, state => {\n  return state.sortBy\n})"
+            },
+            {
+                "name": "getTasks",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/todoist/todoist.selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createSelector(todoSelector, state => {\n  return state.tasks\n})"
+            },
+            {
+                "name": "getTasksAction",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/todoist/todoist.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction('[Todoist] Get Tasks', props<{projectId: string}>())"
             },
             {
                 "name": "initialState",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/app/app.reducer.ts",
+                "file": "src/app/todoist/todoist.reducer.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "State",
-                "defaultValue": "{\r\n  counter: 0\r\n}"
+                "type": "TodoState",
+                "defaultValue": "{\n  menus: DEFAULT_MENU,\n  projects: [],\n  tasks: []\n}"
             },
             {
                 "name": "Large",
@@ -1385,6 +2685,26 @@
                 "defaultValue": "Template.bind({})"
             },
             {
+                "name": "QUERY_PROJECTS",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/graphql.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "gql`\n  query query {\n    projects {\n      id\n      name\n      title\n      description\n      icon\n      predefined\n    }\n  }\n`"
+            },
+            {
+                "name": "QUERY_TASKS",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/graphql.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "gql`\n  query query($projectId: String) {\n    tasks(where: {project_in: $projectId}) {\n      title\n      description\n      important\n      status\n      project {\n        id\n        title\n      }\n    }\n  }\n`"
+            },
+            {
                 "name": "require",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
@@ -1392,16 +2712,6 @@
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "literal type"
-            },
-            {
-                "name": "reset",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/app/app.actions.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "createAction('[Counter Component] Reset')"
             },
             {
                 "name": "Secondary",
@@ -1424,24 +2734,14 @@
                 "defaultValue": "Template.bind({})"
             },
             {
-                "name": "TASKS",
+                "name": "TASK_SORT",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/app/todoist/config/const.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "[]",
-                "defaultValue": "[\r\n  {name: 'myday', label: 'My Day'},\r\n  {name: 'important', label: 'Important'},\r\n  {name: 'planned', label: 'Planned'},\r\n  {name: 'task', label: 'Task'},\r\n]"
-            },
-            {
-                "name": "Template",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Button.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "Story<Button>",
-                "defaultValue": "(args: Button) => ({\n  props: args,\n})"
+                "type": "ISort[]",
+                "defaultValue": "[\n  {\n    name: 'important',\n    title: 'Tầm quan trọng',\n    icon: 'star'\n  },\n  {\n    name: 'expiredDate',\n    title: 'Ngày đến hạn',\n    icon: 'calendar'\n  },\n  {\n    name: 'alphabet',\n    title: 'Theo thứ tự bảng chữ cái',\n    icon: 'switch-vertical'\n  },\n  {\n    name: 'createdDate',\n    title: 'Ngày tạo',\n    icon: 'calculator'\n  }\n]"
             },
             {
                 "name": "Template",
@@ -1457,17 +2757,97 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/stories/Button.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story<Button>",
+                "defaultValue": "(args: Button) => ({\n  props: args,\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/stories/Page.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story<Page>",
                 "defaultValue": "(args: Page) => ({\n  props: args,\n})"
+            },
+            {
+                "name": "TODO_FEATURE_KEY",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/todoist/todoist.reducer.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "string",
+                "defaultValue": "'todo'"
+            },
+            {
+                "name": "todoSelector",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/todoist/todoist.selectors.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createFeatureSelector<TodoState>(TODO_FEATURE_KEY)"
+            },
+            {
+                "name": "totoReducer",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/todoist/todoist.reducer.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createReducer(\n  initialState,\n    on(updateProjectsAction, (state, {projects}) => {\n      return produce(state, draftState => {\n        // Update menu\n        draftState.menus = projects.map((project) => {\n          return {\n            name: project.name || project.id,\n            label: project.title,\n            active: false,\n            icon: project.icon,\n          }\n        })\n\n        draftState.projects = projects\n      })\n    }),\n    on(changeMenuAction, (state, {id}) => {\n      return produce(state, draftState => {\n        draftState.menus.map((menu) => {\n          menu.active = (menu.name === id)\n\n          return menu;\n        })\n      })\n    }),\n    on(updateTasksAction, (state, {tasks}) => {\n      return produce(state, draftState => {\n        draftState.tasks = tasks\n      })\n    }),\n    on(changeSortBy, (state, sort) => {\n      return {...state, sortBy: {name: sort.name, az: 'asc'}}\n    }),\n    on(createTaskAction, (state, {task}) => {\n\n      console.log('tasl', task)\n\n      return {...state, tasks: state.tasks}\n    }),\n)"
+            },
+            {
+                "name": "updateProjectsAction",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/todoist/todoist.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction('[Todoist] Update Projects', props<{projects: IProject[]}>())"
+            },
+            {
+                "name": "updateTaskAction",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/todoist/todoist.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction('[Todoist] Update Task', props<ITask>())"
+            },
+            {
+                "name": "updateTasksAction",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/todoist/todoist.actions.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "createAction('[Todoist] Update Tasks', props<{tasks: ITask[]}>())"
+            },
+            {
+                "name": "uri",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/app/graphql.module.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "`${environment.apiUrl}graphql`"
             }
         ],
         "functions": [
             {
-                "name": "reducer",
-                "file": "src/app/app.reducer.ts",
+                "name": "createApollo",
+                "file": "src/app/graphql.module.ts",
                 "ctype": "miscellaneous",
                 "subtype": "function",
                 "deprecated": false,
@@ -1475,27 +2855,17 @@
                 "description": "",
                 "args": [
                     {
-                        "name": "state",
-                        "deprecated": false,
-                        "deprecationMessage": ""
-                    },
-                    {
-                        "name": "action",
+                        "name": "httpLink",
+                        "type": "HttpLink",
                         "deprecated": false,
                         "deprecationMessage": ""
                     }
                 ],
+                "returnType": "ApolloClientOptions<any>",
                 "jsdoctags": [
                     {
-                        "name": "state",
-                        "deprecated": false,
-                        "deprecationMessage": "",
-                        "tagName": {
-                            "text": "param"
-                        }
-                    },
-                    {
-                        "name": "action",
+                        "name": "httpLink",
+                        "type": "HttpLink",
                         "deprecated": false,
                         "deprecationMessage": "",
                         "tagName": {
@@ -1508,26 +2878,86 @@
         "typealiases": [],
         "enumerations": [],
         "groupedVariables": {
-            "src/app/app.reducer.ts": [
+            "src/app/todoist/todoist.actions.ts": [
                 {
-                    "name": "_counterReducer",
+                    "name": "changeMenuAction",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/app/app.reducer.ts",
+                    "file": "src/app/todoist/todoist.actions.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "createReducer(\r\n  initialState,\r\n  on(increment, (state) => ({...state, counter: state.counter + 1})),\r\n  on(decrement, (state) => ({...state, counter: state.counter - 1})),\r\n  on(reset, (state) => ({...state, counter: 0})),\r\n)"
+                    "defaultValue": "createAction('[Todoist] Change Menu', props<{id: string}>())"
                 },
                 {
-                    "name": "initialState",
+                    "name": "changeSortBy",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/app/app.reducer.ts",
+                    "file": "src/app/todoist/todoist.actions.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "State",
-                    "defaultValue": "{\r\n  counter: 0\r\n}"
+                    "type": "",
+                    "defaultValue": "createAction('[Todoist] Change Sort By', props<ISort>())"
+                },
+                {
+                    "name": "createTaskAction",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/todoist/todoist.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction('[Todoist] Create Task', props<{task: ITask}>())"
+                },
+                {
+                    "name": "getProjectsAction",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/todoist/todoist.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction('[Todoist] Get Projects')"
+                },
+                {
+                    "name": "getTasksAction",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/todoist/todoist.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction('[Todoist] Get Tasks', props<{projectId: string}>())"
+                },
+                {
+                    "name": "updateProjectsAction",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/todoist/todoist.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction('[Todoist] Update Projects', props<{projects: IProject[]}>())"
+                },
+                {
+                    "name": "updateTaskAction",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/todoist/todoist.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction('[Todoist] Update Task', props<ITask>())"
+                },
+                {
+                    "name": "updateTasksAction",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/todoist/todoist.actions.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createAction('[Todoist] Update Tasks', props<{tasks: ITask[]}>())"
                 }
             ],
             "src/test.ts": [
@@ -1551,36 +2981,58 @@
                     "type": "literal type"
                 }
             ],
-            "src/app/app.actions.ts": [
+            "src/app/graphql.ts": [
                 {
-                    "name": "decrement",
+                    "name": "CREATE_TASK",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/app/app.actions.ts",
+                    "file": "src/app/graphql.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "createAction('[Counter Component] Decrement')"
+                    "defaultValue": "gql`\n  mutation createTask($title: String!, $description: String) {\n    createTask(input: {\n      data: {\n        title: $title,\n        description: $description\n      }\n    }) {\n      task {\n        title\n      }\n    }\n  }\n`"
                 },
                 {
-                    "name": "increment",
+                    "name": "QUERY_PROJECTS",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/app/app.actions.ts",
+                    "file": "src/app/graphql.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "createAction('[Counter Component] Increment')"
+                    "defaultValue": "gql`\n  query query {\n    projects {\n      id\n      name\n      title\n      description\n      icon\n      predefined\n    }\n  }\n`"
                 },
                 {
-                    "name": "reset",
+                    "name": "QUERY_TASKS",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/app/app.actions.ts",
+                    "file": "src/app/graphql.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "",
-                    "defaultValue": "createAction('[Counter Component] Reset')"
+                    "defaultValue": "gql`\n  query query($projectId: String) {\n    tasks(where: {project_in: $projectId}) {\n      title\n      description\n      important\n      status\n      project {\n        id\n        title\n      }\n    }\n  }\n`"
+                }
+            ],
+            "src/app/todoist/config/const.ts": [
+                {
+                    "name": "DEFAULT_MENU",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/todoist/config/const.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "IMenu[]",
+                    "defaultValue": "[\n  {name: 'myday', label: 'My Day', active: true, icon: 'sun', counter: 0},\n  {name: 'important', label: 'Important', active: false, icon: 'star', counter: 0},\n  {name: 'planned', label: 'Planned', active: false, icon: 'calendar', counter: 0},\n  {name: 'task', label: 'Task', active: false, icon: 'home', counter: 0},\n]"
+                },
+                {
+                    "name": "TASK_SORT",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/todoist/config/const.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "ISort[]",
+                    "defaultValue": "[\n  {\n    name: 'important',\n    title: 'Tầm quan trọng',\n    icon: 'star'\n  },\n  {\n    name: 'expiredDate',\n    title: 'Ngày đến hạn',\n    icon: 'calendar'\n  },\n  {\n    name: 'alphabet',\n    title: 'Theo thứ tự bảng chữ cái',\n    icon: 'switch-vertical'\n  },\n  {\n    name: 'createdDate',\n    title: 'Ngày tạo',\n    icon: 'calculator'\n  }\n]"
                 }
             ],
             "src/environments/environment.prod.ts": [
@@ -1592,7 +3044,7 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\r\n  production: true\r\n}"
+                    "defaultValue": "{\n  production: true,\n  apiUrl: 'https://todoist.tuando.net/'\n}"
                 }
             ],
             "src/environments/environment.ts": [
@@ -1604,7 +3056,91 @@
                     "deprecated": false,
                     "deprecationMessage": "",
                     "type": "object",
-                    "defaultValue": "{\r\n  production: false\r\n}"
+                    "defaultValue": "{\n  production: false,\n  apiUrl: 'http://localhost:1338/'\n}"
+                }
+            ],
+            "src/app/todoist/todoist.selectors.ts": [
+                {
+                    "name": "getMenus",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/todoist/todoist.selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createSelector(todoSelector, state => {\n  return state.menus\n})"
+                },
+                {
+                    "name": "getProjects",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/todoist/todoist.selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createSelector(todoSelector, state => {\n  return state.projects\n})"
+                },
+                {
+                    "name": "getSortBy",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/todoist/todoist.selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createSelector(todoSelector, state => {\n  return state.sortBy\n})"
+                },
+                {
+                    "name": "getTasks",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/todoist/todoist.selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createSelector(todoSelector, state => {\n  return state.tasks\n})"
+                },
+                {
+                    "name": "todoSelector",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/todoist/todoist.selectors.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createFeatureSelector<TodoState>(TODO_FEATURE_KEY)"
+                }
+            ],
+            "src/app/todoist/todoist.reducer.ts": [
+                {
+                    "name": "initialState",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/todoist/todoist.reducer.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "TodoState",
+                    "defaultValue": "{\n  menus: DEFAULT_MENU,\n  projects: [],\n  tasks: []\n}"
+                },
+                {
+                    "name": "TODO_FEATURE_KEY",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/todoist/todoist.reducer.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "string",
+                    "defaultValue": "'todo'"
+                },
+                {
+                    "name": "totoReducer",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/app/todoist/todoist.reducer.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "createReducer(\n  initialState,\n    on(updateProjectsAction, (state, {projects}) => {\n      return produce(state, draftState => {\n        // Update menu\n        draftState.menus = projects.map((project) => {\n          return {\n            name: project.name || project.id,\n            label: project.title,\n            active: false,\n            icon: project.icon,\n          }\n        })\n\n        draftState.projects = projects\n      })\n    }),\n    on(changeMenuAction, (state, {id}) => {\n      return produce(state, draftState => {\n        draftState.menus.map((menu) => {\n          menu.active = (menu.name === id)\n\n          return menu;\n        })\n      })\n    }),\n    on(updateTasksAction, (state, {tasks}) => {\n      return produce(state, draftState => {\n        draftState.tasks = tasks\n      })\n    }),\n    on(changeSortBy, (state, sort) => {\n      return {...state, sortBy: {name: sort.name, az: 'asc'}}\n    }),\n    on(createTaskAction, (state, {task}) => {\n\n      console.log('tasl', task)\n\n      return {...state, tasks: state.tasks}\n    }),\n)"
                 }
             ],
             "src/stories/Button.stories.ts": [
@@ -1723,24 +3259,24 @@
                     "defaultValue": "(args: Page) => ({\n  props: args,\n})"
                 }
             ],
-            "src/app/todoist/config/const.ts": [
+            "src/app/graphql.module.ts": [
                 {
-                    "name": "TASKS",
+                    "name": "uri",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/app/todoist/config/const.ts",
+                    "file": "src/app/graphql.module.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "[]",
-                    "defaultValue": "[\r\n  {name: 'myday', label: 'My Day'},\r\n  {name: 'important', label: 'Important'},\r\n  {name: 'planned', label: 'Planned'},\r\n  {name: 'task', label: 'Task'},\r\n]"
+                    "type": "",
+                    "defaultValue": "`${environment.apiUrl}graphql`"
                 }
             ]
         },
         "groupedFunctions": {
-            "src/app/app.reducer.ts": [
+            "src/app/graphql.module.ts": [
                 {
-                    "name": "reducer",
-                    "file": "src/app/app.reducer.ts",
+                    "name": "createApollo",
+                    "file": "src/app/graphql.module.ts",
                     "ctype": "miscellaneous",
                     "subtype": "function",
                     "deprecated": false,
@@ -1748,27 +3284,17 @@
                     "description": "",
                     "args": [
                         {
-                            "name": "state",
-                            "deprecated": false,
-                            "deprecationMessage": ""
-                        },
-                        {
-                            "name": "action",
+                            "name": "httpLink",
+                            "type": "HttpLink",
                             "deprecated": false,
                             "deprecationMessage": ""
                         }
                     ],
+                    "returnType": "ApolloClientOptions<any>",
                     "jsdoctags": [
                         {
-                            "name": "state",
-                            "deprecated": false,
-                            "deprecationMessage": "",
-                            "tagName": {
-                                "text": "param"
-                            }
-                        },
-                        {
-                            "name": "action",
+                            "name": "httpLink",
+                            "type": "HttpLink",
                             "deprecated": false,
                             "deprecationMessage": "",
                             "tagName": {
@@ -1793,7 +3319,7 @@
                 "module": "AppRoutingModule",
                 "children": [
                     {
-                        "path": "",
+                        "path": "tasks",
                         "loadChildren": "./todoist/todoist.module#TodoistModule",
                         "children": [
                             {
@@ -1802,16 +3328,25 @@
                                     {
                                         "name": "routes",
                                         "filename": "src/app/todoist/todoist-routing.module.ts",
-                                        "module": "TaskRoutingModule",
+                                        "module": "TodoistRoutingModule",
                                         "children": [
                                             {
-                                                "path": "tasks/:taskId",
-                                                "component": "TasksComponent"
-                                            },
-                                            {
                                                 "path": "",
-                                                "redirectTo": "tasks/myday",
-                                                "pathMatch": "full"
+                                                "component": "TodoistComponent",
+                                                "children": [
+                                                    {
+                                                        "path": "search",
+                                                        "component": "SearchComponent"
+                                                    },
+                                                    {
+                                                        "path": "search/:keyword",
+                                                        "component": "SearchComponent"
+                                                    },
+                                                    {
+                                                        "path": ":taskId",
+                                                        "component": "TasksComponent"
+                                                    }
+                                                ]
                                             }
                                         ],
                                         "kind": "module"
@@ -1820,6 +3355,11 @@
                                 "module": "TodoistModule"
                             }
                         ]
+                    },
+                    {
+                        "path": "",
+                        "redirectTo": "tasks/myday",
+                        "pathMatch": "full"
                     }
                 ],
                 "kind": "module"
@@ -1827,92 +3367,64 @@
         ]
     },
     "coverage": {
-        "count": 2,
+        "count": 1,
         "status": "low",
         "files": [
-            {
-                "filePath": "src/app/app.actions.ts",
-                "type": "interface",
-                "linktype": "interface",
-                "name": "Action",
-                "coveragePercent": 0,
-                "coverageCount": "0/2",
-                "status": "low"
-            },
-            {
-                "filePath": "src/app/app.actions.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "decrement",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/app/app.actions.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "increment",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/app/app.actions.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "reset",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
             {
                 "filePath": "src/app/app.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "AppComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/2",
+                "coverageCount": "0/3",
                 "status": "low"
             },
             {
-                "filePath": "src/app/app.reducer.ts",
-                "type": "interface",
-                "linktype": "interface",
-                "name": "State",
-                "coveragePercent": 0,
-                "coverageCount": "0/2",
-                "status": "low"
-            },
-            {
-                "filePath": "src/app/app.reducer.ts",
+                "filePath": "src/app/graphql.module.ts",
                 "type": "function",
                 "linktype": "miscellaneous",
                 "linksubtype": "function",
-                "name": "reducer",
+                "name": "createApollo",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
             },
             {
-                "filePath": "src/app/app.reducer.ts",
+                "filePath": "src/app/graphql.module.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "_counterReducer",
+                "name": "uri",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
             },
             {
-                "filePath": "src/app/app.reducer.ts",
+                "filePath": "src/app/graphql.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "initialState",
+                "name": "CREATE_TASK",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/graphql.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "QUERY_PROJECTS",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/graphql.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "QUERY_TASKS",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -1923,7 +3435,43 @@
                 "linktype": "interface",
                 "name": "IMenu",
                 "coveragePercent": 0,
-                "coverageCount": "0/5",
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/interface/project.type.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "IProject",
+                "coveragePercent": 0,
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/interface/task.type.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "ICreateTaskInput",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/interface/task.type.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "ISort",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/interface/task.type.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "ISortBy",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
                 "status": "low"
             },
             {
@@ -1932,7 +3480,25 @@
                 "linktype": "interface",
                 "name": "ITask",
                 "coveragePercent": 0,
-                "coverageCount": "0/5",
+                "coverageCount": "0/6",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/services/project.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "ProjectService",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/services/task.service.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "TaskService",
+                "coveragePercent": 0,
+                "coverageCount": "0/7",
                 "status": "low"
             },
             {
@@ -1963,6 +3529,33 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/todoist/components/resizer/resizer.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "ResizerComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/components/skeleton/skeleton.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "SkeletonComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/components/suggestion/suggestion.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "SuggestionComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/todoist/components/svg-definitions/svg-definitions.component.ts",
                 "type": "component",
                 "linktype": "component",
@@ -1981,12 +3574,21 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/todoist/components/task-detail/task-detail.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "TaskDetailComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/todoist/components/task/task.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "TaskComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/7",
+                "coverageCount": "0/9",
                 "status": "low"
             },
             {
@@ -1994,7 +3596,35 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "TASKS",
+                "name": "DEFAULT_MENU",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/config/const.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "TASK_SORT",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/pages/not-found/not-found.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "NotFoundComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/pages/search/search.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "SearchComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -2005,7 +3635,203 @@
                 "linktype": "component",
                 "name": "TasksComponent",
                 "coveragePercent": 0,
-                "coverageCount": "0/7",
+                "coverageCount": "0/17",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/todoist.actions.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "Action",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/todoist.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "changeMenuAction",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/todoist.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "changeSortBy",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/todoist.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "createTaskAction",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/todoist.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "getProjectsAction",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/todoist.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "getTasksAction",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/todoist.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "updateProjectsAction",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/todoist.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "updateTaskAction",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/todoist.actions.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "updateTasksAction",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/todoist.component.ts",
+                "type": "component",
+                "linktype": "component",
+                "name": "TodoistComponent",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/todoist.effects.ts",
+                "type": "injectable",
+                "linktype": "injectable",
+                "name": "TodoistEffects",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/todoist.reducer.ts",
+                "type": "interface",
+                "linktype": "interface",
+                "name": "TodoState",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/todoist.reducer.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "initialState",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/todoist.reducer.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "TODO_FEATURE_KEY",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/todoist.reducer.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "totoReducer",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/todoist.selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "getMenus",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/todoist.selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "getProjects",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/todoist.selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "getSortBy",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/todoist.selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "getTasks",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/todoist/todoist.selectors.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "todoSelector",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
                 "status": "low"
             },
             {

@@ -5,11 +5,13 @@ import { RouterModule, Routes } from '@angular/router';
 import {TodoistComponent} from "@todoist/todoist.component";
 import {TasksComponent} from "@todoist/pages/tasks/tasks.component";
 import {SearchComponent} from "@todoist/pages/search/search.component";
+import {TodoistGuard, Permissions} from "@todoist/todoist.guard";
 
 const routes: Routes = [
   {
     path: '',
     component: TodoistComponent,
+    canActivate: [TodoistGuard],
     children: [
       {
         path: 'search',
@@ -29,6 +31,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [TodoistGuard, Permissions]
 })
 export class TodoistRoutingModule {}

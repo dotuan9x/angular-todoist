@@ -3,6 +3,10 @@ import {TODO_FEATURE_KEY, TodoState} from "@todoist/todoist.reducer";
 
 const todoSelector = createFeatureSelector<TodoState>(TODO_FEATURE_KEY);
 
+export const getAuthenticated = createSelector(todoSelector, state => {
+  return state.isAuthenticated
+});
+
 export const getProjects = createSelector(todoSelector, state => {
   return state.projects
 });

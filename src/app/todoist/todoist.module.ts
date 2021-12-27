@@ -12,6 +12,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatButtonModule} from "@angular/material/button";
+import {RecurrenceModule} from "calendar-recurrence";
 
 import { TodoistComponent } from "@todoist/todoist.component";
 import { TasksComponent } from './pages/tasks/tasks.component';
@@ -56,6 +57,7 @@ import {TodoistEffects} from "@todoist/todoist.effects";
     MatTooltipModule,
     MatSidenavModule,
     MatButtonModule,
+    RecurrenceModule,
     TodoistRoutingModule,
     StoreModule.forFeature(TODO_FEATURE_KEY, totoReducer),
     EffectsModule.forRoot([TodoistEffects])

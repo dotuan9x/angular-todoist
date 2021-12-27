@@ -9,6 +9,7 @@ import {updateProjectsAction, updateTasksAction, createTaskAction, changeMenuAct
 export const TODO_FEATURE_KEY = 'todo';
 
 export interface TodoState {
+  isAuthenticated: boolean,
   menus: IMenu[];
   projects: IProject[];
   tasks: ITask[];
@@ -16,6 +17,7 @@ export interface TodoState {
 }
 
 export const initialState: TodoState = {
+  isAuthenticated: true,
   menus: DEFAULT_MENU,
   projects: [],
   tasks: []
@@ -27,15 +29,27 @@ export const totoReducer = createReducer(
       return produce(state, draftState => {
         // Update menu
         draftState.menus = projects.map((project) => {
+          const {id, attributes} = project;
+
           return {
-            name: project.name || project.id,
-            label: project.title,
+            name: attributes.name || id,
+            label: attributes.title,
             active: false,
-            icon: project.icon,
+            icon: attributes.icon,
           }
         })
 
-        draftState.projects = projects
+        draftState.projects = projects.map((project) => {
+          const {id, attributes} = project;
+
+          return {
+            id,
+            name: attributes.name || id,
+            title: attributes.title,
+            description: attributes.description,
+            icon: attributes.icon,
+          }
+        })
       })
     }),
     on(changeMenuAction, (state, {id}) => {

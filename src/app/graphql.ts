@@ -4,12 +4,16 @@ import {gql} from 'apollo-angular';
 export const QUERY_PROJECTS = gql`
   query query {
     projects {
-      id
-      name
-      title
-      description
-      icon
-      predefined
+      data {
+        id
+        attributes {
+          name
+          title
+          description
+          icon
+          predefined
+        }
+      }
     }
   }
 `;
@@ -17,14 +21,15 @@ export const QUERY_PROJECTS = gql`
 // Reference => https://strapi.io/documentation/developer-docs/latest/development/plugins/graphql.html#query-api
 export const QUERY_TASKS = gql`
   query query($projectId: String) {
-    tasks(where: {project_in: $projectId}) {
-      title
-      description
-      important
-      status
-      project {
-        id
-        title
+    tasks(filters: {id: $projectId}) {
+      data {
+          id
+          attributes {
+              title
+              description
+              important
+              status
+          }
       }
     }
   }

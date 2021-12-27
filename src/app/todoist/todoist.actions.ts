@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import {ITask, ISort, IProject} from "@app/interface";
+import {ITask, ISort, IProject, ProjectGraphQLResult} from "@app/interface";
 
 export interface Action {
   type: string
@@ -7,7 +7,7 @@ export interface Action {
 
 // Project
 export const getProjectsAction = createAction('[Todoist] Get Projects')
-export const updateProjectsAction = createAction('[Todoist] Update Projects', props<{projects: IProject[]}>());
+export const updateProjectsAction = createAction('[Todoist] Update Projects', props<{projects: ProjectGraphQLResult[]}>());
 
 // Menu
 export const changeMenuAction = createAction('[Todoist] Change Menu', props<{id: string}>());
