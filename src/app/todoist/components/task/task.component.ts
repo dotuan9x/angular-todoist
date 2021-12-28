@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import {Store} from "@ngrx/store";
 import {TodoState} from "@todoist/todoist.reducer";
 import {updateTaskAction} from "@todoist/todoist.actions";
+import {TASK_STATUS} from "@todoist/config/const";
 
 @Component({
   selector: 'app-task',
@@ -29,7 +30,7 @@ export class TaskComponent implements OnInit {
   onClickTaskDone() {
     this.store.dispatch(updateTaskAction({
       id: this.id,
-      status: 'DONE'
+      status: TASK_STATUS.DONE
     }))
   }
 

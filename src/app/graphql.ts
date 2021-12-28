@@ -20,8 +20,8 @@ export const QUERY_PROJECTS = gql`
 
 // Reference => https://strapi.io/documentation/developer-docs/latest/development/plugins/graphql.html#query-api
 export const QUERY_TASKS = gql`
-  query query {
-    tasks {
+  query query($status: String) {
+    tasks(filters: {status: {eq: $status}}) {
       data {
           id
           attributes {
@@ -35,16 +35,34 @@ export const QUERY_TASKS = gql`
   }
 `;
 
-export const CREATE_TASK = gql`
-  mutation createTask($title: String!, $description: String) {
-    createTask(input: {
-      data: {
-        title: $title,
-        description: $description
+export const QUERY_TASKS_DONE = gql`
+  query query {
+    tasks {
+      data {
+        id
+        attributes {
+          title
+          description
+          important
+          status
+        }
       }
+    }
+  }
+`;
+
+export const CREATE_TASK = gql`
+  mutation createTask($title: String!, $description: String, $publishedAt: DateTime) {
+    createTask(data: {
+      title: $title,
+      description: $description
+      publishedAt: $publishedAt
     }) {
-      task {
-        title
+      data {
+        id
+        attributes {
+           title
+        }
       }
     }
   }

@@ -13,7 +13,7 @@ export const updateProjectsAction = createAction('[Todoist] Update Projects', pr
 export const changeMenuAction = createAction('[Todoist] Change Menu', props<{id: string}>());
 
 // Tasks
-export const getTasksAction = createAction('[Todoist] Get Tasks', props<{projectId: string}>());
+export const getTasksAction = createAction('[Todoist] Get Tasks', props<{projectId: string, status?: string}>());
 export const updateTasksAction = createAction('[Todoist] Update Tasks', props<{tasks: ITask[], loading?: boolean}>());
 export const createTaskAction = createAction('[Todoist] Create Task', props<{task: ITask}>());
 export const updateTaskAction = createAction('[Todoist] Update Task', props<ITask>());

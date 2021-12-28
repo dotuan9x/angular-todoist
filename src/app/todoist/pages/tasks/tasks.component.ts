@@ -11,6 +11,7 @@ import {TASK_SORT} from "@todoist/config/const";
 import {getProjectsAction, changeSortBy, createTaskAction, getTasksAction, changeMenuAction} from "@todoist/todoist.actions";
 import {TodoState} from '@app/todoist/todoist.reducer'
 import {getProjects, getTasks, getSortBy} from '@app/todoist/todoist.selectors'
+import {TASK_STATUS} from "@todoist/config/const";
 
 @Component({
   selector: 'app-tasks',
@@ -81,7 +82,7 @@ export class TasksComponent implements OnInit {
           const {id: projectId, title} = project;
           this.title = title
 
-          this.store.dispatch(getTasksAction({projectId: projectId}));
+          this.store.dispatch(getTasksAction({projectId: projectId, status: TASK_STATUS.ACTIVE}));
         }
       })
     }
@@ -100,7 +101,9 @@ export class TasksComponent implements OnInit {
       this.store.dispatch(createTaskAction({
         task: {
           title: taskName,
-          status: 'TODO'
+          description: '',
+          status: TASK_STATUS.ACTIVE,
+          publishedAt: new Date()
         }
       }));
     }

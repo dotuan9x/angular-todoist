@@ -3,19 +3,22 @@ import {
   IsNotEmpty,
   IsBoolean,
 } from 'class-validator';
+import {TASK_STATUS} from "@todoist/config/const";
 
 export interface ITask {
   id?: string,
   title?: string,
   description?: string,
-  status?: 'TODO' | 'DONE'
+  status?: TASK_STATUS
   important?: boolean,
   created?: Date
+  publishedAt?: Date
 }
 
-export interface ICreateTaskInput {
+export interface CreateTaskInputType {
   title: string,
   description?: string,
+  status?: TASK_STATUS
 }
 
 export interface ISort {
