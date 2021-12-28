@@ -14,7 +14,7 @@ export const changeMenuAction = createAction('[Todoist] Change Menu', props<{id:
 
 // Tasks
 export const getTasksAction = createAction('[Todoist] Get Tasks', props<{projectId: string}>());
-export const updateTasksAction = createAction('[Todoist] Update Tasks', props<{tasks: ITask[]}>());
+export const updateTasksAction = createAction('[Todoist] Update Tasks', props<{tasks: ITask[], loading?: boolean}>());
 export const createTaskAction = createAction('[Todoist] Create Task', props<{task: ITask}>());
 export const updateTaskAction = createAction('[Todoist] Update Task', props<ITask>());
 

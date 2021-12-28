@@ -20,8 +20,8 @@ export const QUERY_PROJECTS = gql`
 
 // Reference => https://strapi.io/documentation/developer-docs/latest/development/plugins/graphql.html#query-api
 export const QUERY_TASKS = gql`
-  query query($projectId: String) {
-    tasks(filters: {id: $projectId}) {
+  query query {
+    tasks {
       data {
           id
           attributes {

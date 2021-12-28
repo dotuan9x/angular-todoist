@@ -29,7 +29,13 @@ export class TaskService {
         projectId: projectId,
       },
     }).valueChanges.pipe(
-      map(result => result.data.tasks)
+      map(result => {
+        return {
+          data: result.data.tasks.data,
+          loading: result.loading,
+          networkStatus: result.networkStatus
+        }
+      })
     );
   }
 }

@@ -85,11 +85,11 @@ export const totoReducer = createReducer(
         })
       })
     }),
-    on(updateTasksAction, (state, {tasks}) => {
+    on(updateTasksAction, (state, {tasks, loading}) => {
       return produce(state, draftState => {
         draftState.tasks = {
           data: tasks,
-          loading: true
+          loading
         }
       })
     }),

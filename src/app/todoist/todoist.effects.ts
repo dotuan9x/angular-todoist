@@ -1,17 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import {Store} from "@ngrx/store";
 import { EMPTY } from 'rxjs';
-import { map, mergeMap, find, withLatestFrom, catchError} from 'rxjs/operators';
-import {Store, select} from "@ngrx/store";
-import {
-  getProjectsAction,
-  updateProjectsAction,
-  getTasksAction,
-  updateTasksAction,
-  createTaskAction
-} from "@todoist/todoist.actions";
+import { plainToInstance } from 'class-transformer';
+import {validate} from 'class-validator';
+import { map, mergeMap, catchError} from 'rxjs/operators';
+
+import {getProjectsAction, updateProjectsAction, getTasksAction, updateTasksAction} from "@todoist/todoist.actions";
 import {ProjectService, TaskService} from "@app/services";
-import {getProjects} from "@todoist/todoist.selectors";
+import {TaskEntity} from "@app/interface";
 
 @Injectable()
 export class TodoistEffects {
@@ -31,7 +28,27 @@ export class TodoistEffects {
       ofType(getTasksAction),
       mergeMap(({ projectId }) => this.taskService.getAll(projectId)
         .pipe(
-          map(tasks => updateTasksAction({tasks: tasks})),
+          map(({data, loading}) => {
+            data = data.map((task) => {
+              const attribute = plainToInstance(TaskEntity, task.attributes);
+
+              (async () => {
+                const errors = await validate(attribute);
+
+                if (errors.length > 0) {
+                  console.log('errors', errors)
+                  return {}
+                } else {
+                  return {
+                    id: task.id,
+                    ...attribute
+                  }
+                }
+              })()
+            }).filter((task) => Object.keys(task).length > 0)
+
+            return updateTasksAction({tasks: data, loading})
+          }),
           catchError(() => EMPTY)
         ))
     )

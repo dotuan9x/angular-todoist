@@ -52,11 +52,10 @@ export class TasksComponent implements OnInit {
     this.sortBy = store.select(getSortBy)
 
     // Tasks from store
-    store.select(getTasks).subscribe((tasks) => {
-      this.tasks = [].concat(tasks);
+    store.select(getTasks).subscribe(({data, loading}) => {
+      this.tasks = [].concat(data);
 
-      // @todo
-      this.showLoading = false;
+      this.showLoading = loading;
     })
   }
 
