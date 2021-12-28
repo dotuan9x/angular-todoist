@@ -15,7 +15,13 @@ export class ProjectService {
       query: QUERY_PROJECTS
     }).valueChanges
       .pipe(
-        map(result => result.data.projects.data)
+        map(result => {
+          return {
+            data: result.data.projects.data,
+            loading: result.loading,
+            networkStatus: result.networkStatus
+          }
+        })
       );
   }
 }

@@ -75,8 +75,8 @@ export class TasksComponent implements OnInit {
         id: id
       }))
 
-      this.store.select(getProjects).subscribe((projects) => {
-        const project = projects.find((project) => project.name === id || project.id === id);
+      this.store.select(getProjects).subscribe(({data}) => {
+        const project = data.find((project) => project.name === id || project.id === id);
 
         if (project) {
           const {id: projectId, title} = project;

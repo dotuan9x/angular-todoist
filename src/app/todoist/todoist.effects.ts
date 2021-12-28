@@ -20,7 +20,7 @@ export class TodoistEffects {
       ofType(getProjectsAction),
       mergeMap(() => this.projectService.getAll()
         .pipe(
-          map(projects => updateProjectsAction({projects: projects})),
+          map(({data, loading}) => updateProjectsAction({projects: data, loading})),
           catchError(() => EMPTY)
         ))
     )
