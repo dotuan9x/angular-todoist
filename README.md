@@ -46,6 +46,44 @@ import {QUERY_RATES} from '@app/graphql'
 
 ```
 
+### Phân quyền 
+Sử dụng thư viện [casl](https://casl.js.org/v5/en/package/casl-angular) trong Angular để hỗ trợ phân quyền
+
+Phân quyền sẽ gồm các 4 vấn đề chính:
+- **Actions**: nhưng hành động như create, read, update, delete
+- **Subject**: đối tượng được thực hiện hành động như User, Article, Product
+- **Fields**: một đối tượng thì sẽ có nhiều fields, vd như User sẽ có field status
+- **Conditions**: điều kiện khi thực hiện một hành động
+
+```javascript
+import { defineAbility } from '@casl/ability';
+
+export default (user) => defineAbility((can) => {
+  can('read', 'Article');
+  can('update', 'Article', ['title', 'description'], { authorId: 123 })
+});
+
+// Ví dụ: bài viết có authorId là 123 thì có thể được cập nhật 2 fields là title và description
+
+
+// Có thể defiend role theo json một cách dễ dàng
+import { Ability } from '@casl/ability';
+
+export default new Ability([
+  {
+    action: 'read',
+    subject: 'Post'
+  },
+  {
+    inverted: true, // điều kiện ngược lại
+    action: 'delete',
+    subject: 'Post',
+    conditions: { published: true }
+  }
+])
+
+```
+
 ### SCAMs (single component Angular modules)
 Reference:
 - https://dev.to/this-is-angular/emulating-tree-shakable-components-using-single-component-angular-modules-13do

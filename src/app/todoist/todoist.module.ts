@@ -4,6 +4,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {StoreModule} from "@ngrx/store";
 import { EffectsModule } from '@ngrx/effects';
+import {PureAbility} from "@casl/ability";
 
 import { TodoistRoutingModule } from './todoist-routing.module';
 import {MatMenuModule} from "@angular/material/menu";
@@ -13,6 +14,7 @@ import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {MatButtonModule} from "@angular/material/button";
 import {RecurrenceModule} from "calendar-recurrence";
+import {AbilityModule} from "@casl/angular";
 
 import { TodoistComponent } from "@todoist/todoist.component";
 import { TasksComponent } from './pages/tasks/tasks.component';
@@ -28,6 +30,7 @@ import { SuggestionComponent } from './components/suggestion/suggestion.componen
 import { TaskDetailComponent } from './components/task-detail/task-detail.component';
 import { SkeletonComponent } from "./components/skeleton/skeleton.component";
 
+import { AppAbility } from '@app/services';
 import {TODO_FEATURE_KEY, totoReducer} from "./todoist.reducer";
 import {TodoistEffects} from "@todoist/todoist.effects";
 
@@ -59,8 +62,13 @@ import {TodoistEffects} from "@todoist/todoist.effects";
     MatButtonModule,
     RecurrenceModule,
     TodoistRoutingModule,
+    AbilityModule,
     StoreModule.forFeature(TODO_FEATURE_KEY, totoReducer),
     EffectsModule.forRoot([TodoistEffects])
-  ]
+  ],
+  providers: [
+    { provide: AppAbility, useValue: new AppAbility() },
+    { provide: PureAbility, useExisting: AppAbility },
+  ],
 })
 export class TodoistModule { }
